@@ -18,4 +18,5 @@
         android:onClick="clickAddNoteActivity"
         android:layout_alignParentEnd="true"
         android:layout_margin="16dp"/>
+
 </RelativeLayout>
