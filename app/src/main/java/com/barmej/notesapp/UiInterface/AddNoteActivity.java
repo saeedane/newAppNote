@@ -1,6 +1,7 @@
 package com.barmej.notesapp.UiInterface;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -20,11 +21,12 @@ import androidx.core.app.ActivityCompat;
 import com.barmej.notesapp.Constant;
 import com.barmej.notesapp.R;
 
+import static com.barmej.notesapp.Constant.EXTRA_TEXT_PHOTO;
+
 
 public class AddNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 123;
     private static final int REQUEST_CODE_PHOTO = 100;
-    private static final int REQUEST_CODE_SEND_DATA = 101;
     CardView mCardViewPhoto,mCardViewNote,mCardViewCheckNote;
     ImageView photoImageView;
     Uri photoImageUri;
@@ -48,7 +50,10 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewPhoto.setVisibility(View.VISIBLE);
                 mCardViewNote.setVisibility(View.GONE);
                 mCardViewCheckNote.setVisibility(View.GONE);
+                Intent intent = new Intent();
 
+                setResult(Activity.RESULT_OK, intent);
+                finish();
 
             }
         });
@@ -61,7 +66,10 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewPhoto.setVisibility(View.GONE);
                 mCardViewNote.setVisibility(View.VISIBLE);
                 mCardViewCheckNote.setVisibility(View.GONE);
+                Intent intent = new Intent();
 
+                setResult(Activity.RESULT_OK, intent);
+                finish();
 
             }
         });
@@ -75,7 +83,10 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewNote.setVisibility(View.GONE);
                 mCardViewCheckNote.setVisibility(View.VISIBLE);
 
+                Intent intent = new Intent();
 
+                setResult(Activity.RESULT_OK, intent);
+                finish();
             }
         });
 
@@ -123,25 +134,22 @@ public class AddNoteActivity extends AppCompatActivity {
 
 
 
+
+
     private void submitData() {
 
-        if (photoImageUri != null) {
-
+        if (photoImageUri != null){
             Intent intent = new Intent();
             intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
             intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
             intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
             intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
-            setResult(REQUEST_CODE_SEND_DATA, intent);
+            setResult(Activity.RESULT_OK, intent);
             finish();
-            Toast.makeText(getApplicationContext()," "+photoImageUri,Toast.LENGTH_SHORT).show();
-            Toast.makeText(getApplicationContext()," "+photoNoteEditText.getText(),Toast.LENGTH_SHORT).show();
-
-        }else{
-
-            Toast.makeText(getApplicationContext(),"قم باختيار البينات مطلوب ",Toast.LENGTH_SHORT).show();
 
         }
+
+
 
 
 

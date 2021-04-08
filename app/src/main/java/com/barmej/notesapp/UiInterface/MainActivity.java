@@ -2,7 +2,6 @@ package com.barmej.notesapp.UiInterface;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
@@ -25,21 +24,21 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
 
-    private static final int REQUEST_ADD_DATA = 200;
+    private static final int REQUEST_ADD_DATA = 101;
     RecyclerNoteAdapter mAdapter;
-    RecyclerView mRecyler;
+    RecyclerView mRecyclerNote;
     ArrayList<Items> mItems;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mRecyler = findViewById(R.id.recycler_view_photos);
+        mRecyclerNote = findViewById(R.id.recycler_view_photos);
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
-        mRecyler.setHasFixedSize(true);
-        mRecyler.setLayoutManager(staggeredGridLayoutManager);
+        mRecyclerNote.setHasFixedSize(true);
+        mRecyclerNote.setLayoutManager(staggeredGridLayoutManager);
         mItems = new ArrayList<>();
         mAdapter = new RecyclerNoteAdapter(mItems);
-        mRecyler.setAdapter(mAdapter);
+        mRecyclerNote.setAdapter(mAdapter);
 
 
 
@@ -63,22 +62,57 @@ public class MainActivity extends AppCompatActivity {
 
             if (resultCode == RESULT_OK && data != null ){
 
-                Uri imagePhoto = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
-                Toast.makeText(getApplicationContext()," "+data.getData(),Toast.LENGTH_SHORT).show();
-                String photoText = data.getParcelableExtra(Constant.EXTRA_TEXT_PHOTO);
-                NotePhoto notePhoto = new NotePhoto(photoText,imagePhoto);
-                addItem(notePhoto);
+
+
+                getExtraDataNote(data);
+
+
 
             }
 
         }
     }
 
-
-
-    private void addItem(NotePhoto notePhoto) {
-        mItems.add(new Items(1,notePhoto));
-        mAdapter.notifyItemInserted(mItems.size() - 1);
+    private void getExtraDataNote(Intent data) {
+        // image uri
+        Uri imagePhoto = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
+        String photoText = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
+        NotePhoto notePhoto = new NotePhoto(photoText,imagePhoto);
+        addItemNotePhoto(notePhoto);
+        // text note
+        String textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
+        Toast.makeText(getApplicationContext()," "+textNote,Toast.LENGTH_SHORT).show();
+        Notes notes = new Notes(textNote);
+        addItemNotes(notes);
+        //text  note check
+        String textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
+        CheckNote NoteCheck = new CheckNote(textNoteCheck,false);
+        addItemNoteCheck(NoteCheck);
 
     }
+
+    private void addItemNotes(Notes notes) {
+        mItems.add(new Items(0,notes));
+        mAdapter.notifyItemChanged(mItems.size() - 2);
+
+    }
+
+    private void addItemNotePhoto(NotePhoto notePhoto) {
+        mItems.add(new Items(1,notePhoto));
+        mAdapter.notifyItemChanged(mItems.size() - 2);
+
+    }
+
+    private void addItemNoteCheck(CheckNote noteCheck) {
+
+
+        mItems.add(new Items(2,noteCheck));
+        mAdapter.notifyItemChanged(mItems.size() - 2);
+
+
+    }
+
+
+
+
 }
