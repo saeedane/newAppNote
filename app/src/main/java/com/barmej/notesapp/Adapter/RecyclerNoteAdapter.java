@@ -7,12 +7,13 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.barmej.notesapp.Interface.OnItemClickListener;
+import com.barmej.notesapp.Interface.OnItemLongClickListener;
 import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.Model.Items;
 import com.barmej.notesapp.Model.NotePhoto;
@@ -23,10 +24,14 @@ import java.util.ArrayList;
 
 public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    ArrayList<Items> mItems;
+    private ArrayList<Items> mItems;
+    private OnItemClickListener onItemClickListener;
+    private OnItemLongClickListener onItemLongClickListener;
 
-    public RecyclerNoteAdapter(ArrayList<Items> mItems) {
+    public RecyclerNoteAdapter(ArrayList<Items> mItems,OnItemClickListener onItemClickListener,OnItemLongClickListener onItemLongClickListener) {
         this.mItems = mItems;
+        this.onItemClickListener = onItemClickListener;
+        this.onItemLongClickListener = onItemLongClickListener;
     }
 
     @NonNull
@@ -59,7 +64,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
 
 
         if (getItemViewType(position) == 0){
@@ -74,6 +79,23 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             CheckNote mNotesCheck = (CheckNote) mItems.get(position).getObject();
             ((itemNoteCheck)holder).setItemNoteCheck(mNotesCheck);
         }
+
+        //update items
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onItemClickListener.onClickItem(position);
+
+            }
+        });
+        //delete items
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                onItemLongClickListener.onLongItem(position);
+                return false;
+            }
+        });
 
 
     }
@@ -90,16 +112,19 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     static class itemNote  extends RecyclerView.ViewHolder{
         TextView tv_note_simple;
+        CardView cardViewNotes;
+
 
         itemNote(@NonNull View itemView) {
             super(itemView);
             tv_note_simple = itemView.findViewById(R.id.tv_note_simple);
+            cardViewNotes = itemView.findViewById(R.id.cardViewNotes);
         }
 
         void setItemNote(Notes notes){
 
-            tv_note_simple.setText(notes.getNoteBody());
-
+            tv_note_simple.setText(notes.getNoteBodySimple());
+            cardViewNotes.getBackground().setTint(notes.getBackgroundCardNoteColor());
 
 
 
@@ -113,31 +138,38 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class itemNoteCheck  extends RecyclerView.ViewHolder{
         private TextView  tv_note_check;
         private CheckBox checkBox;
-        CardView mCard;
+        CardView cardViewCheckNote;
 
         itemNoteCheck(@NonNull final View itemView) {
             super(itemView);
             tv_note_check = itemView.findViewById(R.id.tv_note_check);
             checkBox = itemView.findViewById(R.id.checkBox);
-            mCard = itemView.findViewById(R.id.cardViewChecked);
+            cardViewCheckNote = itemView.findViewById(R.id.cardViewCheckNote);
+
+        }
+        void setItemNoteCheck(final CheckNote itemNoteCheck){
+
+            tv_note_check.setText(itemNoteCheck.getNoteBodyCheck());
+            cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     if (checkBox.isChecked()){
-                       mCard.getBackground().setTint(Color.rgb(76,175,  80));
+                        cardViewCheckNote.setCardBackgroundColor(Color.rgb(76,175,  80));
+                        tv_note_check.setTextColor(Color.WHITE);
+                        checkBox.setTextColor(Color.WHITE);
 
 
                     }else{
-                        mCard.getBackground().setTint(Color.rgb(220,84,75));
+                        cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
+                        tv_note_check.setTextColor(Color.parseColor("#3D3B3B"));
+                        checkBox.setTextColor(Color.GRAY);
 
                     }
                 }
             });
-        }
-        void setItemNoteCheck(CheckNote itemNoteCheck){
 
-            tv_note_check.setText(itemNoteCheck.getNoteBody());
 
 
 
@@ -150,17 +182,22 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     static class itemNotePhoto  extends RecyclerView.ViewHolder{
         private TextView  tv_note_photo;
         private ImageView  image_note;
+        private CardView cardViewPhotoNote;
 
         public itemNotePhoto(@NonNull View itemView) {
             super(itemView);
             tv_note_photo = itemView.findViewById(R.id.tv_note_photo);
             image_note = itemView.findViewById(R.id.img_note_photo);
+            cardViewPhotoNote = itemView.findViewById(R.id.cardViewPhotoNote);
+
+
         }
         void setItemNotePhoto(NotePhoto itemNotePhoto){
 
 
-            tv_note_photo.setText(itemNotePhoto.getNoteBody());
+            tv_note_photo.setText(itemNotePhoto.getNoteBodyPhoto());
             image_note.setImageURI(itemNotePhoto.getNoteImage());
+            cardViewPhotoNote.setCardBackgroundColor(itemNotePhoto.getBackgroundCardNoteColor());
 
         }
     }

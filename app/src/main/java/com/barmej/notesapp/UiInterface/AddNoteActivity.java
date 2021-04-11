@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -19,9 +20,8 @@ import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
 import com.barmej.notesapp.Constant;
+import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.R;
-
-import static com.barmej.notesapp.Constant.EXTRA_TEXT_PHOTO;
 
 
 public class AddNoteActivity extends AppCompatActivity {
@@ -31,6 +31,7 @@ public class AddNoteActivity extends AppCompatActivity {
     ImageView photoImageView;
     Uri photoImageUri;
     TextView photoNoteEditText,noteEditText,checkNoteEditText;
+    CheckBox checkNoteCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,14 +47,12 @@ public class AddNoteActivity extends AppCompatActivity {
         findViewById(R.id.buCardViewPhoto).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 mCardViewPhoto.setVisibility(View.VISIBLE);
                 mCardViewNote.setVisibility(View.GONE);
                 mCardViewCheckNote.setVisibility(View.GONE);
-                Intent intent = new Intent();
 
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
+
 
             }
         });
@@ -66,10 +65,6 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewPhoto.setVisibility(View.GONE);
                 mCardViewNote.setVisibility(View.VISIBLE);
                 mCardViewCheckNote.setVisibility(View.GONE);
-                Intent intent = new Intent();
-
-                setResult(Activity.RESULT_OK, intent);
-                finish();
 
             }
         });
@@ -83,10 +78,10 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewNote.setVisibility(View.GONE);
                 mCardViewCheckNote.setVisibility(View.VISIBLE);
 
-                Intent intent = new Intent();
 
-                setResult(Activity.RESULT_OK, intent);
-                finish();
+
+
+
             }
         });
 
@@ -98,6 +93,7 @@ public class AddNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 changeColorCardView(Color.rgb(220,84,75));
+
             }
         });
         //fun change color card view yellow
@@ -113,6 +109,8 @@ public class AddNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 changeColorCardView(Color.rgb(225,245,  253));
+
+
             }
         });
 
@@ -134,27 +132,70 @@ public class AddNoteActivity extends AppCompatActivity {
 
 
 
+    private void extraSetResultValue(int resultOk) {
+        Intent intent = new Intent();
+        intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
+        intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
+        intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
+        intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
+        intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
+        intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, mCardViewPhoto.getCardBackgroundColor().getDefaultColor());
+        intent.putExtra(Constant.EXTRA_NOTE_COLOR, mCardViewNote.getCardBackgroundColor().getDefaultColor());
+        setResult(resultOk, intent);
+        finish();
+    }
+
+
+
+
+
 
 
     private void submitData() {
 
-        if (photoImageUri != null){
-            Intent intent = new Intent();
-            intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
-            intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
-            intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
-            intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
-            setResult(Activity.RESULT_OK, intent);
-            finish();
+
+        checkEmptyCardViewNotes();
+
+
+
+
+    }
+
+    private void checkEmptyCardViewNotes() {
+
+        if (mCardViewNote.getVisibility() == View.VISIBLE){
+            if (!noteEditText.getText().toString().isEmpty()){
+                extraSetResultValue(Activity.RESULT_OK);
+
+            }else{
+                Toast.makeText(getApplicationContext(),"  النص مطلوب في مذكرة البسيطة    ",Toast.LENGTH_SHORT).show();
+            }
 
         }
 
+        if (mCardViewCheckNote.getVisibility() == View.VISIBLE){
+
+            if (!checkNoteEditText.getText().toString().isEmpty()){
+
+                extraSetResultValue(Activity.RESULT_OK);
+            }else{
+
+                Toast.makeText(getApplicationContext(),"  النص مطلوب في مذكرة مهام    ",Toast.LENGTH_SHORT).show();
+            }
+        }
+        if (mCardViewPhoto.getVisibility()== View.VISIBLE) {
+
+            if (photoImageUri != null && !photoNoteEditText.getText().toString().isEmpty()) {
+                extraSetResultValue(Activity.RESULT_OK);
 
 
+            } else {
+                Toast.makeText(getApplicationContext(), " الصورة و النص مطلوب في مذكرة بالصورة   ", Toast.LENGTH_SHORT).show();
 
 
+            }
 
-
+        }
 
 
     }
@@ -162,9 +203,10 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private void changeColorCardView(int color) {
 
-        mCardViewPhoto.getBackground().setTint(color);
-        mCardViewNote.getBackground().setTint(color);
-        mCardViewCheckNote.getBackground().setTint(color);
+        mCardViewPhoto.setCardBackgroundColor(color);
+        mCardViewNote.setCardBackgroundColor(color);
+        mCardViewCheckNote.setCardBackgroundColor(color);
+
 
     }
 
@@ -179,7 +221,9 @@ public class AddNoteActivity extends AppCompatActivity {
         //textView
         photoNoteEditText = findViewById(R.id.photoNoteEditText);
         noteEditText = findViewById(R.id.noteEditText);
-        checkNoteEditText = findViewById(R.id.checkNoteCheckBox);
+        checkNoteEditText = findViewById(R.id.checkNoteEditText);
+        // checkbox
+        checkNoteCheckBox = findViewById(R.id.checkNoteCheckBox);
 
     }
 

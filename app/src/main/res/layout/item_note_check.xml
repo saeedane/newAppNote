@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardViewChecked"
+    android:id="@+id/cardViewCheckNote"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:backgroundTint="@color/red"
     android:orientation="vertical"
     app:cardCornerRadius="4dp"
     app:cardElevation="4dp"
@@ -23,7 +22,7 @@
             android:layout_alignParentRight="true"
             android:text="@string/add_note_text"
             android:textAlignment="textStart"
-            android:textColor="#FFFFFF"
+            android:textColor="#3D3B3B"
             android:textSize="18sp" />
 
         <CheckBox
