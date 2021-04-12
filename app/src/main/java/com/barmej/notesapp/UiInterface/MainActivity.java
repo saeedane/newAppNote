@@ -35,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     RecyclerView mRecyclerNote;
     ArrayList<Items> mItems;
     private int notesColor,noteCheckColor,notePhotoColor;
+    private Uri imagePhoto;
+    private String photoTextNote,textNote,textNoteCheck;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClickItem(int position) {
 
                 updateItem(position);
+                Toast.makeText(getApplicationContext(),"position "+position,Toast.LENGTH_SHORT).show();
             }
         }, new OnItemLongClickListener() {
             @Override
@@ -65,12 +68,37 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateItem(int position) {
 
+        if (mItems.get(position).getType() == 0){
+            Intent  intentNoteDetails = new Intent(MainActivity.this,UpdateNoteDetails.class);
+            intentNoteDetails.putExtra(Constant.EXTRA_TEXT_NOTE,textNote);
+            startActivity(intentNoteDetails);
+
+        }
+        if (mItems.get(position).getType() == 1){
+
+            Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_NOTE,photoTextNote);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
+
+            startActivity(intentNotePhotoDetails);
+        }
+
+        if (mItems.get(position).getType() == 2){
+            Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
+            intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
+            startActivity(intentNoteCheckDetails);
+
+        }
+
+
+
+
 
 
     }
 
     private void deleteItem(final int position) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this).
+        final AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogTheme_Light).
         setMessage("هل أنت متأكد من حذف هذا العنصر ");
         dialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
@@ -116,16 +144,16 @@ public class MainActivity extends AppCompatActivity {
     private void getExtraDataNote(Intent data) {
         getExtraColorCardView(data);
         // image uri
-        Uri imagePhoto = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
-        String photoTextNote = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
+        imagePhoto = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
+        photoTextNote = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
         NotePhoto notePhoto = new NotePhoto(photoTextNote,imagePhoto,notePhotoColor);
         addItemNotePhoto(notePhoto);
         // text note
-        String textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
+        textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
         Notes notes = new Notes(textNote,notesColor);
         addItemNotes(notes);
         //text  note check
-        String textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
+        textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
         CheckNote NoteCheck = new CheckNote(textNoteCheck,noteCheckColor);
         addItemNoteCheck(NoteCheck);
 
