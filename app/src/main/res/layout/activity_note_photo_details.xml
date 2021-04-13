@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/blue">
 
     <ImageView
@@ -24,6 +25,18 @@
         android:background="@android:color/transparent"
         android:gravity="top"
         android:hint="@string/add_note_text"
-        android:padding="16dp" />
+        android:padding="16dp"
+        android:textColor="@android:color/black"
+        android:textColorLink="#989CA0" />
+
+    <Button
+        android:id="@+id/button_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/photoNoteEditText"
+        android:layout_margin="5dp"
+        android:text="تحديث"
+        android:textSize="18sp" />
+
 
 </RelativeLayout>

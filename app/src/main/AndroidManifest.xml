@@ -19,9 +19,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".UiInterface.AddNoteActivity" android:parentActivityName=".UiInterface.MainActivity"/>
-    <activity android:name=".UiInterface.UpdateNoteDetails" android:parentActivityName=".UiInterface.MainActivity"/>
-    <activity android:name=".UiInterface.UpdateNotePhotoDetails" android:parentActivityName=".UiInterface.MainActivity"/>
-    <activity android:name=".UiInterface.UpdateNoteCheckDetails" android:parentActivityName=".UiInterface.MainActivity"/>
+        <activity android:name=".UiInterface.UpdateNoteDetails" android:parentActivityName=".UiInterface.MainActivity"/>
+        <activity android:name=".UiInterface.UpdateNoteCheckDetails" android:parentActivityName=".UiInterface.MainActivity"/>
+        <activity android:name=".UiInterface.UpdateNotePhotoDetails" android:parentActivityName=".UiInterface.MainActivity"/>
 
     </application>
 

@@ -8,4 +8,8 @@ public class Constant {
     public static final String EXTRA_NOTE_COLOR = "KEY_COLOR_NOTE";
     public static final String EXTRA_NOTE_PHOTO_COLOR = "KEY_COLOR_NOTE_PHOTO" ;
     public static final String EXTRA_NOTE_CHECK_COLOR = "KEY_COLOR_NOTE_CHECK";
+    public static final String EXTRA_NOTE_POSITION= "KEY_POSITION";
+
+
+    public static final String PRF = "KEY_PRF"  ;
 }

@@ -8,11 +8,20 @@ import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.BaseAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
@@ -24,6 +33,7 @@ import com.barmej.notesapp.Model.Items;
 import com.barmej.notesapp.Model.NotePhoto;
 import com.barmej.notesapp.Model.Notes;
 import com.barmej.notesapp.R;
+import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -31,9 +41,9 @@ public class MainActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_ADD_DATA = 101;
-    RecyclerNoteAdapter mAdapter;
+    public static RecyclerNoteAdapter mAdapter;
     RecyclerView mRecyclerNote;
-    ArrayList<Items> mItems;
+    public static ArrayList<Items> mItems;
     private int notesColor,noteCheckColor,notePhotoColor;
     private Uri imagePhoto;
     private String photoTextNote,textNote,textNoteCheck;
@@ -42,14 +52,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerNote = findViewById(R.id.recycler_view_photos);
-
         mItems = new ArrayList<>();
         mAdapter = new RecyclerNoteAdapter(mItems, new OnItemClickListener() {
             @Override
             public void onClickItem(int position) {
-
                 updateItem(position);
-                Toast.makeText(getApplicationContext(),"position "+position,Toast.LENGTH_SHORT).show();
             }
         }, new OnItemLongClickListener() {
             @Override
@@ -66,36 +73,9 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void updateItem(int position) {
-
-        if (mItems.get(position).getType() == 0){
-            Intent  intentNoteDetails = new Intent(MainActivity.this,UpdateNoteDetails.class);
-            intentNoteDetails.putExtra(Constant.EXTRA_TEXT_NOTE,textNote);
-            startActivity(intentNoteDetails);
-
-        }
-        if (mItems.get(position).getType() == 1){
-
-            Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_NOTE,photoTextNote);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
-
-            startActivity(intentNotePhotoDetails);
-        }
-
-        if (mItems.get(position).getType() == 2){
-            Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
-            intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
-            startActivity(intentNoteCheckDetails);
-
-        }
 
 
 
-
-
-
-    }
 
     private void deleteItem(final int position) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogTheme_Light).
@@ -150,12 +130,14 @@ public class MainActivity extends AppCompatActivity {
         addItemNotePhoto(notePhoto);
         // text note
         textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
+
         Notes notes = new Notes(textNote,notesColor);
         addItemNotes(notes);
         //text  note check
         textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
         CheckNote NoteCheck = new CheckNote(textNoteCheck,noteCheckColor);
         addItemNoteCheck(NoteCheck);
+
 
     }
 
@@ -186,6 +168,7 @@ public class MainActivity extends AppCompatActivity {
         if (!noteCheck.getNoteBodyCheck().isEmpty()) {
             mItems.add(new Items(2, noteCheck));
             mAdapter.notifyItemInserted(mItems.size() - 1);
+
         }
 
 
@@ -193,5 +176,48 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    private void updateItem(final int position) {
+
+        if (mItems.get(position).getType() == 0){
+
+            setContentView(R.layout.activity_note_details);
+
+
+        }
+        if (mItems.get(position).getType() == 1){
+
+            Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,photoTextNote);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,position);
+
+
+
+
+             startActivity(intentNotePhotoDetails);
+        }
+
+        if (mItems.get(position).getType() == 2){
+            //Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
+            // intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
+            //startActivity(intentNoteCheckDetails);
+
+
+        }
+
+
+
+
+
+
+    }
+
+
+
+
 
 }
+
+
+
+

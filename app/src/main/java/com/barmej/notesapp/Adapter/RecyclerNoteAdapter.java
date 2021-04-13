@@ -100,6 +100,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
+
     @Override
     public int getItemCount() {
         return mItems.size();
