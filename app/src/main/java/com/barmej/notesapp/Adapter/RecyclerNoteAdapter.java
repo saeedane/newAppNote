@@ -86,6 +86,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             public void onClick(View view) {
                 onItemClickListener.onClickItem(position);
 
+
             }
         });
         //delete items
