@@ -7,7 +7,9 @@ public class NotePhoto {
     private Uri noteImage;
     private int backgroundCardNoteColor;
 
-
+    public NotePhoto(String noteBodyPhoto) {
+        this.noteBodyPhoto = noteBodyPhoto;
+    }
 
     public NotePhoto(String noteBodyPhoto, Uri noteImage, int backgroundCardNoteColor) {
         this.noteBodyPhoto = noteBodyPhoto;
@@ -17,7 +19,7 @@ public class NotePhoto {
 
 
 
-    public String getNoteBodyPhoto() {
+    public  String getNoteBodyPhoto() {
         return noteBodyPhoto;
     }
 

@@ -125,7 +125,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void setItemNote(Notes notes){
 
             tv_note_simple.setText(notes.getNoteBodySimple());
-            cardViewNotes.getBackground().setTint(notes.getBackgroundCardNoteColor());
+            cardViewNotes.setCardBackgroundColor(notes.getBackgroundCardNoteColor());
 
 
 

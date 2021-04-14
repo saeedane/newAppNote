@@ -190,6 +190,7 @@ public class MainActivity extends AppCompatActivity {
             intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,photoTextNote);
             intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
             intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,position);
+            intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,notePhotoColor);
 
 
 
