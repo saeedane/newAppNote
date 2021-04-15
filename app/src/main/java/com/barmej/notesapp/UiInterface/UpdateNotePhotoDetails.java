@@ -49,7 +49,8 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         Uri imgPhotoUriExtra =  getIntent().getParcelableExtra(Constant.EXTRA_URI_PHOTO);
         photoImageView.setImageURI(imgPhotoUriExtra);
         // receive text note photo item
-        photoNoteEditText.setText(notePhoto.getNoteBodyPhoto() );
+        String photoNoteText =  getIntent().getStringExtra(Constant.EXTRA_TEXT_PHOTO);
+        photoNoteEditText.setText(photoNoteText);
         // receive position item
         position = getIntent().getIntExtra(Constant.EXTRA_NOTE_POSITION,0);
         // receive color item
@@ -154,14 +155,13 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if (!photoNoteEditText.getText().toString().isEmpty()) {
+        if (!photoNoteEditText.getText().toString().isEmpty() && imgPhotoUri != null) {
             super.onBackPressed();
-
             UpdateNotePhoto();
 
         }else{
 
-            Toast.makeText(getApplicationContext()," لا تترك نص الملاحظة فارغ  ",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "  الصورة و نص مذكرة مطلوب حتي يتم تحديث المذكرة   ", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -173,7 +173,9 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         MainActivity.mItems.add(new Items(1, notePhoto));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
-        Toast.makeText(getApplicationContext(),"  تم تحديث بيانات التذكرة  ",Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), "  تم تحديث بيانات التذكرة  ", Toast.LENGTH_SHORT).show();
         finish();
+
+
     }
 }

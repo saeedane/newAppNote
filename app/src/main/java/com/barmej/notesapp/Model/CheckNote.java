@@ -3,12 +3,19 @@ package com.barmej.notesapp.Model;
 public class CheckNote {
 
     private String noteBodyCheck;
-    public static int backgroundCardNoteColor;
+    public  int backgroundCardNoteColor;
+    public  boolean isChecked ;
 
 
     public CheckNote(String noteBodyCheck, int backgroundCardNoteColor) {
         this.noteBodyCheck = noteBodyCheck;
         this.backgroundCardNoteColor = backgroundCardNoteColor;
+    }
+
+    public CheckNote(String noteBodyCheck, int backgroundCardNoteColor, boolean isChecked) {
+        this.noteBodyCheck = noteBodyCheck;
+        this.backgroundCardNoteColor = backgroundCardNoteColor;
+        this.isChecked = isChecked;
     }
 
     public String getNoteBodyCheck() {
@@ -20,4 +27,7 @@ public class CheckNote {
     }
 
 
+    public boolean isChecked() {
+        return isChecked;
+    }
 }

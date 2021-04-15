@@ -1,5 +1,6 @@
 package com.barmej.notesapp.Adapter;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,25 +13,25 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.barmej.notesapp.Interface.OnItemClickListener;
+import com.barmej.notesapp.Constant;
 import com.barmej.notesapp.Interface.OnItemLongClickListener;
 import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.Model.Items;
 import com.barmej.notesapp.Model.NotePhoto;
 import com.barmej.notesapp.Model.Notes;
 import com.barmej.notesapp.R;
+import com.barmej.notesapp.UiInterface.UpdateNoteCheckDetails;
+import com.barmej.notesapp.UiInterface.UpdateNotePhotoDetails;
 
 import java.util.ArrayList;
 
 public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private ArrayList<Items> mItems;
-    private OnItemClickListener onItemClickListener;
     private OnItemLongClickListener onItemLongClickListener;
 
-    public RecyclerNoteAdapter(ArrayList<Items> mItems,OnItemClickListener onItemClickListener,OnItemLongClickListener onItemLongClickListener) {
+    public RecyclerNoteAdapter(ArrayList<Items> mItems,OnItemLongClickListener onItemLongClickListener) {
         this.mItems = mItems;
-        this.onItemClickListener = onItemClickListener;
         this.onItemLongClickListener = onItemLongClickListener;
     }
 
@@ -64,7 +65,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
 
         if (getItemViewType(position) == 0){
@@ -80,16 +81,6 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((itemNoteCheck)holder).setItemNoteCheck(mNotesCheck);
         }
 
-        //update items
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onItemClickListener.onClickItem(position);
-
-
-            }
-        });
-        //delete items
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -153,24 +144,46 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
             tv_note_check.setText(itemNoteCheck.getNoteBodyCheck());
             cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
+            checkBox.setChecked(itemNoteCheck.isChecked());
+
             checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
                     if (checkBox.isChecked()){
+                        checkBox.setChecked(true);
                         cardViewCheckNote.setCardBackgroundColor(Color.rgb(76,175,  80));
                         tv_note_check.setTextColor(Color.WHITE);
                         checkBox.setTextColor(Color.WHITE);
 
 
+
+
                     }else{
+                        checkBox.setChecked(false);
                         cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
                         tv_note_check.setTextColor(Color.parseColor("#3D3B3B"));
                         checkBox.setTextColor(Color.GRAY);
 
+
                     }
                 }
             });
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent  intentNoteCheckDetails = new Intent(itemView.getContext(),UpdateNoteCheckDetails.class);
+
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,itemNoteCheck.getNoteBodyCheck());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_IS_CHECK_NOTE,checkBox.isChecked());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION,getAdapterPosition());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR,cardViewCheckNote.getCardBackgroundColor().getDefaultColor());
+                     itemView.getContext().startActivity(intentNoteCheckDetails);
+                }
+            });
+
+
 
 
 
@@ -194,12 +207,31 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         }
-        void setItemNotePhoto(NotePhoto itemNotePhoto){
+        void setItemNotePhoto(final NotePhoto itemNotePhoto){
 
 
             tv_note_photo.setText(itemNotePhoto.getNoteBodyPhoto());
             image_note.setImageURI(itemNotePhoto.getNoteImage());
             cardViewPhotoNote.setCardBackgroundColor(itemNotePhoto.getBackgroundCardNoteColor());
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+
+                        Intent intentNotePhotoDetails = new Intent(itemView.getContext(), UpdateNotePhotoDetails.class);
+                        intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,itemNotePhoto.getNoteBodyPhoto());
+                        intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,itemNotePhoto.getNoteImage());
+                        intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,getAdapterPosition());
+                        intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,itemNotePhoto.getBackgroundCardNoteColor());
+
+
+
+
+                    itemView.getContext().startActivity(intentNotePhotoDetails);
+
+                }
+            });
 
         }
     }

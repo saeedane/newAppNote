@@ -5,35 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.BaseAdapter;
-import android.widget.Button;
-import android.widget.CompoundButton;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
 import com.barmej.notesapp.Constant;
-import com.barmej.notesapp.Interface.OnItemClickListener;
 import com.barmej.notesapp.Interface.OnItemLongClickListener;
 import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.Model.Items;
 import com.barmej.notesapp.Model.NotePhoto;
 import com.barmej.notesapp.Model.Notes;
 import com.barmej.notesapp.R;
-import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;
 
@@ -53,12 +39,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mRecyclerNote = findViewById(R.id.recycler_view_photos);
         mItems = new ArrayList<>();
-        mAdapter = new RecyclerNoteAdapter(mItems, new OnItemClickListener() {
-            @Override
-            public void onClickItem(int position) {
-                updateItem(position);
-            }
-        }, new OnItemLongClickListener() {
+        mAdapter = new RecyclerNoteAdapter(mItems, new OnItemLongClickListener() {
             @Override
             public void onLongItem(int position) {
 
@@ -178,33 +159,33 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateItem(final int position) {
 
-        if (mItems.get(position).getType() == 0){
+        //if (mItems.get(position).getType() == 0){
 
-            setContentView(R.layout.activity_note_details);
-
-
-        }
-        if (mItems.get(position).getType() == 1){
-
-            Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,photoTextNote);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,position);
-            intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,notePhotoColor);
+          //  setContentView(R.layout.activity_note_details);
 
 
+       // }
+      //  if (mItems.get(position).getType() == 1){
+
+          //  Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
+         //   intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,photoTextNote);
+       //     intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
+         //   intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,position);
+           // intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,notePhotoColor);
 
 
-             startActivity(intentNotePhotoDetails);
-        }
-
-        if (mItems.get(position).getType() == 2){
-            //Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
-            // intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
-            //startActivity(intentNoteCheckDetails);
 
 
-        }
+            // startActivity(intentNotePhotoDetails);
+       // }
+
+       // if (mItems.get(position).getType() == 2){
+          //  Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
+           // intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
+         //   startActivity(intentNoteCheckDetails);
+
+
+       // }
 
 
 
