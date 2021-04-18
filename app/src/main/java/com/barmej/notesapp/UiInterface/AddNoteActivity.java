@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.CheckBox;
@@ -15,10 +16,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
+import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
 import com.barmej.notesapp.Constant;
 import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.R;
@@ -27,11 +30,11 @@ import com.barmej.notesapp.R;
 public class AddNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 123;
     private static final int REQUEST_CODE_PHOTO = 100;
-    CardView mCardViewPhoto,mCardViewNote,mCardViewCheckNote;
-    ImageView photoImageView;
-    Uri photoImageUri;
-    TextView photoNoteEditText,noteEditText,checkNoteEditText;
-    CheckBox checkNoteCheckBox;
+    private CardView mCardViewPhoto,mCardViewNote,mCardViewCheckNote;
+    private ImageView photoImageView;
+    private Uri photoImageUri;
+    private TextView photoNoteEditText,noteEditText,checkNoteEditText;
+    private CheckBox checkNoteCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -251,7 +254,7 @@ public class AddNoteActivity extends AppCompatActivity {
 
             }else{
 
-                Toast.makeText(getApplicationContext(),"عذرا لا تملك صلاحية لفتح معرض الصور ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.not_permission_select_photo,Toast.LENGTH_SHORT).show();
 
 
             }
@@ -278,10 +281,11 @@ public class AddNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivityForResult(intent,REQUEST_CODE_PHOTO);
+        startActivityForResult(Intent.createChooser(intent,getString(R.string.select_photo)),REQUEST_CODE_PHOTO);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -291,18 +295,22 @@ public class AddNoteActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK && data != null && data.getData() != null ){
 
 
-                selectPhotoUri(data);
+                selectPhotoUri(data.getData());
 
 
 
+
+            }else {
+
+                Toast.makeText(getApplicationContext(),R.string.field_to_get_image,Toast.LENGTH_SHORT).show();
             }
 
         }
 
     }
 
-    private void selectPhotoUri(Intent data) {
-        photoImageUri = data.getData();
+    private void selectPhotoUri(Uri data) {
+        photoImageUri = data;
         photoImageView.setImageURI(this.photoImageUri);
 
     }

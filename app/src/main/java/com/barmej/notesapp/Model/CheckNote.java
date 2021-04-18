@@ -18,6 +18,8 @@ public class CheckNote {
         this.isChecked = isChecked;
     }
 
+
+
     public String getNoteBodyCheck() {
         return noteBodyCheck;
     }
@@ -30,4 +32,6 @@ public class CheckNote {
     public boolean isChecked() {
         return isChecked;
     }
+
+
 }

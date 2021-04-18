@@ -21,6 +21,7 @@ import com.barmej.notesapp.Model.NotePhoto;
 import com.barmej.notesapp.Model.Notes;
 import com.barmej.notesapp.R;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -54,18 +55,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-
-
-
     private void deleteItem(final int position) {
         final AlertDialog.Builder dialog = new AlertDialog.Builder(this,R.style.AlertDialogTheme_Light).
         setMessage("هل أنت متأكد من حذف هذا العنصر ");
         dialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                mItems.remove(position);
-                mAdapter.notifyItemRemoved(position);
+
+                try {
+
+                    mItems.remove(position);
+                    mAdapter.notifyItemRemoved(position);
+                    mAdapter.notifyDataSetChanged();
+
+                }catch (Exception e){e.printStackTrace();}
+
 
 
             }
@@ -157,42 +161,6 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-    private void updateItem(final int position) {
-
-        //if (mItems.get(position).getType() == 0){
-
-          //  setContentView(R.layout.activity_note_details);
-
-
-       // }
-      //  if (mItems.get(position).getType() == 1){
-
-          //  Intent  intentNotePhotoDetails = new Intent(MainActivity.this,UpdateNotePhotoDetails.class);
-         //   intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,photoTextNote);
-       //     intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,imagePhoto);
-         //   intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,position);
-           // intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,notePhotoColor);
-
-
-
-
-            // startActivity(intentNotePhotoDetails);
-       // }
-
-       // if (mItems.get(position).getType() == 2){
-          //  Intent  intentNoteCheckDetails = new Intent(MainActivity.this,UpdateNoteCheckDetails.class);
-           // intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,textNoteCheck);
-         //   startActivity(intentNoteCheckDetails);
-
-
-       // }
-
-
-
-
-
-
-    }
 
 
 

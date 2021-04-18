@@ -2,6 +2,7 @@ package com.barmej.notesapp.Adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,6 +32,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<Items> mItems;
     private OnItemLongClickListener onItemLongClickListener;
 
+    public static CheckNote mNotesCheck;
     public RecyclerNoteAdapter(ArrayList<Items> mItems,OnItemLongClickListener onItemLongClickListener) {
         this.mItems = mItems;
         this.onItemLongClickListener = onItemLongClickListener;
@@ -64,6 +67,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
@@ -77,7 +81,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             ((itemNotePhoto)holder).setItemNotePhoto(mNotesPhoto);
         }else{
 
-            CheckNote mNotesCheck = (CheckNote) mItems.get(position).getObject();
+             mNotesCheck = (CheckNote) mItems.get(position).getObject();
             ((itemNoteCheck)holder).setItemNoteCheck(mNotesCheck);
         }
 
@@ -140,31 +144,36 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             cardViewCheckNote = itemView.findViewById(R.id.cardViewCheckNote);
 
         }
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void setItemNoteCheck(final CheckNote itemNoteCheck){
 
             tv_note_check.setText(itemNoteCheck.getNoteBodyCheck());
             cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
-            checkBox.setChecked(itemNoteCheck.isChecked());
+            if (itemNoteCheck.isChecked() == true){
+
+                cardViewCheckNote.getBackground().setTint(Color.rgb(76,175,  80));
+                checkBox.setChecked(true);
+
+            }else {
+
+                cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
+                checkBox.setChecked(false);
+
+            }
 
             checkBox.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
                 @Override
                 public void onClick(View view) {
 
                     if (checkBox.isChecked()){
                         checkBox.setChecked(true);
-                        cardViewCheckNote.setCardBackgroundColor(Color.rgb(76,175,  80));
-                        tv_note_check.setTextColor(Color.WHITE);
-                        checkBox.setTextColor(Color.WHITE);
-
-
+                        cardViewCheckNote.getBackground().setTint(Color.rgb(76,175,  80));
 
 
                     }else{
                         checkBox.setChecked(false);
-                        cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
-                        tv_note_check.setTextColor(Color.parseColor("#3D3B3B"));
-                        checkBox.setTextColor(Color.GRAY);
-
+                        cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
 
                     }
                 }

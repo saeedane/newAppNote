@@ -6,4 +6,9 @@
     <string name="confirm"> تعم </string>
     <string name="cancel">   لا </string>
     <string name="update">تحديث</string>
+    <string name="field_to_get_image">فشل في الوصول الى الصورةة</string>
+    <string name="validate_message_note_photo">  الصورة و النص مطلوب </string>
+    <string name="success_message_notes">   تم تحديث المذكرة بنجاح </string>
+    <string name="not_permission_select_photo">عذرا لا تملك صلاحية لدخول الى معرض الصور</string>
+    <string name="select_photo">اختر الصورة</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.barmej.notesapp.UiInterface;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
 import com.barmej.notesapp.Constant;
 import com.barmej.notesapp.Model.CheckNote;
 import com.barmej.notesapp.Model.Items;
@@ -29,15 +31,16 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
     private Boolean isChecked;
     private CheckBox checkBox;
     private int noteCheckColor;
-    private CardView cardViewNoteCheck;
+    private ConstraintLayout cardViewNoteCheck;
     int position;
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_check_details);
+        cardViewNoteCheck =  findViewById(R.id.cardViewNoteCheck);
         noteCheckColor = getIntent().getIntExtra(Constant.EXTRA_NOTE_CHECK_COLOR,0);
-        cardViewNoteCheck = findViewById(R.id.cardViewNoteCheck);
-        cardViewNoteCheck.setBackgroundColor(noteCheckColor);
+        cardViewNoteCheck.getBackground().setTint(noteCheckColor);
         checkNoteEditText = findViewById(R.id.checkNoteEditText);
         checkBox = findViewById(R.id.checkNoteCheckBox);
         checkNoteText = getIntent().getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
@@ -45,24 +48,38 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
         checkNoteEditText.setText(checkNoteText);
         checkBox.setChecked(isChecked);
         position = getIntent().getIntExtra(Constant.EXTRA_NOTE_POSITION,0);
+
+        if (isChecked == true){
+
+            cardViewNoteCheck.getBackground().setTint(Color.rgb(76,175,  80));
+
+
+        }else{
+            cardViewNoteCheck.getBackground().setTint(noteCheckColor);
+
+
+
+        }
+
+
         checkBox.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onClick(View view) {
-            if (checkBox.isChecked()){
-                checkBox.setChecked(true);
-                cardViewNoteCheck.getBackground().setTint(Color.rgb(76,175,  80));
-                noteCheckColor = cardViewNoteCheck.getSolidColor();
+                if (checkBox.isChecked()){
 
-            }else{
-                checkBox.setChecked(false);
-                cardViewNoteCheck.getBackground().setTint(noteCheckColor);
+                    checkBox.setChecked(true);
+                    cardViewNoteCheck.getBackground().setTint(Color.rgb(76,175,  80));
 
+                }else{
+                    checkBox.setChecked(false);
+                    cardViewNoteCheck.getBackground().setTint(noteCheckColor);
 
-
-            }
+                }
             }
         });
+
+
+
 
 
 
@@ -83,11 +100,13 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
     private void updateCheckNote() {
 
         checkNoteText = checkNoteEditText.getText().toString();
+
         CheckNote checkNote = new CheckNote(checkNoteText,noteCheckColor,checkBox.isChecked());
         MainActivity.mItems.add(new Items(2, checkNote));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
-        Toast.makeText(getApplicationContext(), "  تم تحديث بيانات التذكرة  ", Toast.LENGTH_SHORT).show();
+        MainActivity.mAdapter.notifyDataSetChanged();
+        Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
         finish();
 
     }

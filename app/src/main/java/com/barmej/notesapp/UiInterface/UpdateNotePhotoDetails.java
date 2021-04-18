@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -39,6 +41,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
     private int colorNotePhoto;
     private NotePhoto notePhoto;
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         // receive image uri item
         Uri imgPhotoUriExtra =  getIntent().getParcelableExtra(Constant.EXTRA_URI_PHOTO);
         photoImageView.setImageURI(imgPhotoUriExtra);
+        getContentResolver().takePersistableUriPermission(imgPhotoUri,Intent.FLAG_GRANT_READ_URI_PERMISSION);
         // receive text note photo item
         String photoNoteText =  getIntent().getStringExtra(Constant.EXTRA_TEXT_PHOTO);
         photoNoteEditText.setText(photoNoteText);
@@ -75,43 +79,11 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
     public void openGallery(View view) {
 
-        checkPermissionPhoto();
+        selectPhoto();
 
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == REQUEST_CODE_PERMISSION){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-                selectPhoto();
-
-            }else{
-
-                Toast.makeText(getApplicationContext(),"عذرا لا تملك صلاحية لفتح معرض الصور ",Toast.LENGTH_SHORT).show();
-
-
-
-            }
-
-        }
-    }
-
-    private void checkPermissionPhoto() {
-
-
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-
-            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_PERMISSION);
-        }else {
-
-            selectPhoto();
-        }
-
-
-    }
 
     private void selectPhoto() {
 
@@ -119,10 +91,11 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivityForResult(intent,REQUEST_CODE_PHOTO);
+        startActivityForResult(Intent.createChooser(intent,getString(R.string.select_photo)),REQUEST_CODE_PHOTO);
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -131,11 +104,11 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
             if (resultCode == RESULT_OK && data != null && data.getData() != null ){
 
-                selectPhotoUri(data);
+                selectPhotoUri(data.getData());
 
             }else{
 
-                Toast.makeText(getApplicationContext(),"يجب عليك اضافة صورة  ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(),R.string.field_to_get_image,Toast.LENGTH_SHORT).show();
 
             }
 
@@ -145,9 +118,9 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
     }
 
-    private void selectPhotoUri(Intent data) {
+    private void selectPhotoUri(Uri data) {
 
-        imgPhotoUri= data.getData();
+        imgPhotoUri= data;
         photoImageView.setImageURI(imgPhotoUri);
 
     }
@@ -161,7 +134,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
         }else{
 
-            Toast.makeText(getApplicationContext(), "  الصورة و نص مذكرة مطلوب حتي يتم تحديث المذكرة   ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),R.string.validate_message_note_photo, Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -173,7 +146,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         MainActivity.mItems.add(new Items(1, notePhoto));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
-        Toast.makeText(getApplicationContext(), "  تم تحديث بيانات التذكرة  ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
         finish();
 
 
