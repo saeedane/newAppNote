@@ -3,8 +3,8 @@ package com.barmej.notesapp.Model;
 public class CheckNote {
 
     private String noteBodyCheck;
-    public  int backgroundCardNoteColor;
-    public  boolean isChecked ;
+    public int backgroundCardNoteColor;
+    public boolean isChecked;
 
 
     public CheckNote(String noteBodyCheck, int backgroundCardNoteColor) {
@@ -17,7 +17,6 @@ public class CheckNote {
         this.backgroundCardNoteColor = backgroundCardNoteColor;
         this.isChecked = isChecked;
     }
-
 
 
     public String getNoteBodyCheck() {

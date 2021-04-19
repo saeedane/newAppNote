@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/relative_view_photos"
+    android:id="@+id/card_view_photos"
+    app:cardBackgroundColor="@color/blue"
     android:background="@color/blue">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/photoImageView"
@@ -31,6 +36,6 @@
         android:padding="16dp"
         android:textColor="@android:color/black"
         android:textColorLink="#989CA0" />
+    </RelativeLayout>
 
-
-</RelativeLayout>
+</androidx.cardview.widget.CardView>

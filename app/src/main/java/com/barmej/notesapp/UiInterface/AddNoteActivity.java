@@ -30,18 +30,16 @@ import com.barmej.notesapp.R;
 public class AddNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 123;
     private static final int REQUEST_CODE_PHOTO = 100;
-    private CardView mCardViewPhoto,mCardViewNote,mCardViewCheckNote;
+    private CardView mCardViewPhoto, mCardViewNote, mCardViewCheckNote;
     private ImageView photoImageView;
     private Uri photoImageUri;
-    private TextView photoNoteEditText,noteEditText,checkNoteEditText;
-    private CheckBox checkNoteCheckBox;
+    private TextView photoNoteEditText, noteEditText, checkNoteEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_note);
         init();
-
 
 
         //=========== function change type card view  note ============//
@@ -53,8 +51,6 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewPhoto.setVisibility(View.VISIBLE);
                 mCardViewNote.setVisibility(View.GONE);
                 mCardViewCheckNote.setVisibility(View.GONE);
-
-
 
 
             }
@@ -82,9 +78,6 @@ public class AddNoteActivity extends AppCompatActivity {
                 mCardViewCheckNote.setVisibility(View.VISIBLE);
 
 
-
-
-
             }
         });
 
@@ -95,7 +88,7 @@ public class AddNoteActivity extends AppCompatActivity {
         findViewById(R.id.buColorRed).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeColorCardView(Color.rgb(220,84,75));
+                changeColorCardView(Color.rgb(220, 84, 75));
 
             }
         });
@@ -103,7 +96,7 @@ public class AddNoteActivity extends AppCompatActivity {
         findViewById(R.id.buColorYellow).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeColorCardView(Color.rgb(254,193,48));
+                changeColorCardView(Color.rgb(254, 193, 48));
             }
         });
 
@@ -111,7 +104,7 @@ public class AddNoteActivity extends AppCompatActivity {
         findViewById(R.id.buColorBlue).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                changeColorCardView(Color.rgb(225,245,  253));
+                changeColorCardView(Color.rgb(225, 245, 253));
 
 
             }
@@ -127,31 +120,27 @@ public class AddNoteActivity extends AppCompatActivity {
         });
 
 
-
-
-
-
     }
-
 
 
     private void extraSetResultValue(int resultOk) {
         Intent intent = new Intent();
+
+        // note photo
         intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
         intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
         intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, mCardViewPhoto.getCardBackgroundColor().getDefaultColor());
+        // note check
+        intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
+        intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
+        // notes simple
+        intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
         intent.putExtra(Constant.EXTRA_NOTE_COLOR, mCardViewNote.getCardBackgroundColor().getDefaultColor());
+
+
         setResult(resultOk, intent);
         finish();
     }
-
-
-
-
-
 
 
     private void submitData() {
@@ -160,40 +149,38 @@ public class AddNoteActivity extends AppCompatActivity {
         checkEmptyCardViewNotes();
 
 
-
-
     }
 
     private void checkEmptyCardViewNotes() {
 
-        if (mCardViewNote.getVisibility() == View.VISIBLE){
-            if (!noteEditText.getText().toString().isEmpty()){
+        if (mCardViewNote.getVisibility() == View.VISIBLE) {
+            if (!noteEditText.getText().toString().isEmpty()) {
                 extraSetResultValue(Activity.RESULT_OK);
 
-            }else{
-                Toast.makeText(getApplicationContext(),"  النص مطلوب في مذكرة البسيطة    ",Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
             }
 
         }
 
-        if (mCardViewCheckNote.getVisibility() == View.VISIBLE){
+        if (mCardViewCheckNote.getVisibility() == View.VISIBLE) {
 
-            if (!checkNoteEditText.getText().toString().isEmpty()){
+            if (!checkNoteEditText.getText().toString().isEmpty()) {
 
                 extraSetResultValue(Activity.RESULT_OK);
-            }else{
+            } else {
 
-                Toast.makeText(getApplicationContext(),"  النص مطلوب في مذكرة مهام    ",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
             }
         }
-        if (mCardViewPhoto.getVisibility()== View.VISIBLE) {
+        if (mCardViewPhoto.getVisibility() == View.VISIBLE) {
 
             if (photoImageUri != null && !photoNoteEditText.getText().toString().isEmpty()) {
                 extraSetResultValue(Activity.RESULT_OK);
 
 
             } else {
-                Toast.makeText(getApplicationContext(), " الصورة و النص مطلوب في مذكرة بالصورة   ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_photo, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -225,8 +212,6 @@ public class AddNoteActivity extends AppCompatActivity {
         photoNoteEditText = findViewById(R.id.photoNoteEditText);
         noteEditText = findViewById(R.id.noteEditText);
         checkNoteEditText = findViewById(R.id.checkNoteEditText);
-        // checkbox
-        checkNoteCheckBox = findViewById(R.id.checkNoteCheckBox);
 
     }
 
@@ -235,26 +220,22 @@ public class AddNoteActivity extends AppCompatActivity {
         checkPermissionPhoto();
 
 
-
     }
-
-
-
 
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
-        if (requestCode == REQUEST_CODE_PERMISSION){
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED ){
+        if (requestCode == REQUEST_CODE_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 
                 selectPhoto();
 
 
-            }else{
+            } else {
 
-                Toast.makeText(getApplicationContext(),R.string.not_permission_select_photo,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.not_permission_select_photo, Toast.LENGTH_SHORT).show();
 
 
             }
@@ -264,11 +245,11 @@ public class AddNoteActivity extends AppCompatActivity {
 
     private void checkPermissionPhoto() {
 
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
 
-            ActivityCompat.requestPermissions(AddNoteActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},REQUEST_CODE_PERMISSION);
+            ActivityCompat.requestPermissions(AddNoteActivity.this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, REQUEST_CODE_PERMISSION);
 
-        }else{
+        } else {
 
             selectPhoto();
         }
@@ -281,7 +262,7 @@ public class AddNoteActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivityForResult(Intent.createChooser(intent,getString(R.string.select_photo)),REQUEST_CODE_PHOTO);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), REQUEST_CODE_PHOTO);
     }
 
 
@@ -290,19 +271,17 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_PHOTO){
+        if (requestCode == REQUEST_CODE_PHOTO) {
 
-            if (resultCode == RESULT_OK && data != null && data.getData() != null ){
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
 
 
                 selectPhotoUri(data.getData());
 
 
+            } else {
 
-
-            }else {
-
-                Toast.makeText(getApplicationContext(),R.string.field_to_get_image,Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), R.string.field_to_get_image, Toast.LENGTH_SHORT).show();
             }
 
         }

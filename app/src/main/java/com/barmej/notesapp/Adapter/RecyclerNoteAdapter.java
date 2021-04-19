@@ -23,6 +23,7 @@ import com.barmej.notesapp.Model.NotePhoto;
 import com.barmej.notesapp.Model.Notes;
 import com.barmej.notesapp.R;
 import com.barmej.notesapp.UiInterface.UpdateNoteCheckDetails;
+import com.barmej.notesapp.UiInterface.UpdateNoteDetails;
 import com.barmej.notesapp.UiInterface.UpdateNotePhotoDetails;
 
 import java.util.ArrayList;
@@ -32,8 +33,8 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     private ArrayList<Items> mItems;
     private OnItemLongClickListener onItemLongClickListener;
 
-    public static CheckNote mNotesCheck;
-    public RecyclerNoteAdapter(ArrayList<Items> mItems,OnItemLongClickListener onItemLongClickListener) {
+
+    public RecyclerNoteAdapter(ArrayList<Items> mItems, OnItemLongClickListener onItemLongClickListener) {
         this.mItems = mItems;
         this.onItemLongClickListener = onItemLongClickListener;
     }
@@ -43,26 +44,26 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         // 1 - simple note
-        if (viewType == 0){
+        if (viewType == 0) {
             return new itemNote(
 
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note,parent,false)
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note, parent, false)
             );
 
 
             // 2 - note check box
-        }else if (viewType == 1){
+        } else if (viewType == 1) {
 
             return new itemNotePhoto(
 
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_photo,parent,false)
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_photo, parent, false)
             );
 
-        }else{
+        } else {
 
             return new itemNoteCheck(
 
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_check,parent,false)
+                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_check, parent, false)
             );
         }
     }
@@ -72,17 +73,17 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public void onBindViewHolder(@NonNull final RecyclerView.ViewHolder holder, final int position) {
 
 
-        if (getItemViewType(position) == 0){
+        if (getItemViewType(position) == 0) {
             Notes mNotes = (Notes) mItems.get(position).getObject();
-            ((itemNote)holder).setItemNote(mNotes);
-        }else if(getItemViewType(position) == 1){
+            ((itemNote) holder).setItemNote(mNotes);
+        } else if (getItemViewType(position) == 1) {
 
             NotePhoto mNotesPhoto = (NotePhoto) mItems.get(position).getObject();
-            ((itemNotePhoto)holder).setItemNotePhoto(mNotesPhoto);
-        }else{
+            ((itemNotePhoto) holder).setItemNotePhoto(mNotesPhoto);
+        } else {
 
-             mNotesCheck = (CheckNote) mItems.get(position).getObject();
-            ((itemNoteCheck)holder).setItemNoteCheck(mNotesCheck);
+            CheckNote mNotesCheck = (CheckNote) mItems.get(position).getObject();
+            ((itemNoteCheck) holder).setItemNoteCheck(mNotesCheck);
         }
 
         holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -107,7 +108,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         return mItems.get(position).getType();
     }
 
-    static class itemNote  extends RecyclerView.ViewHolder{
+    static class itemNote extends RecyclerView.ViewHolder {
         TextView tv_note_simple;
         CardView cardViewNotes;
 
@@ -118,12 +119,21 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             cardViewNotes = itemView.findViewById(R.id.cardViewNotes);
         }
 
-        void setItemNote(Notes notes){
+        void setItemNote(final Notes notes) {
 
             tv_note_simple.setText(notes.getNoteBodySimple());
             cardViewNotes.setCardBackgroundColor(notes.getBackgroundCardNoteColor());
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intentNoteCheckDetails = new Intent(itemView.getContext(), UpdateNoteDetails.class);
 
-
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_NOTE, notes.getNoteBodySimple());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_COLOR, notes.getBackgroundCardNoteColor());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
+                    itemView.getContext().startActivity(intentNoteCheckDetails);
+                }
+            });
 
 
         }
@@ -131,9 +141,8 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
-
-    static class itemNoteCheck  extends RecyclerView.ViewHolder{
-        private TextView  tv_note_check;
+    static class itemNoteCheck extends RecyclerView.ViewHolder {
+        private TextView tv_note_check;
         private CheckBox checkBox;
         CardView cardViewCheckNote;
 
@@ -144,17 +153,18 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             cardViewCheckNote = itemView.findViewById(R.id.cardViewCheckNote);
 
         }
+
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        void setItemNoteCheck(final CheckNote itemNoteCheck){
+        void setItemNoteCheck(final CheckNote itemNoteCheck) {
 
             tv_note_check.setText(itemNoteCheck.getNoteBodyCheck());
             cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getBackgroundCardNoteColor());
-            if (itemNoteCheck.isChecked() == true){
+            if (itemNoteCheck.isChecked() == true) {
 
-                cardViewCheckNote.getBackground().setTint(Color.rgb(76,175,  80));
+                cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
                 checkBox.setChecked(true);
 
-            }else {
+            } else {
 
                 cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
                 checkBox.setChecked(false);
@@ -166,12 +176,12 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 @Override
                 public void onClick(View view) {
 
-                    if (checkBox.isChecked()){
+                    if (checkBox.isChecked()) {
                         checkBox.setChecked(true);
-                        cardViewCheckNote.getBackground().setTint(Color.rgb(76,175,  80));
+                        cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
 
 
-                    }else{
+                    } else {
                         checkBox.setChecked(false);
                         cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
 
@@ -182,30 +192,24 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent  intentNoteCheckDetails = new Intent(itemView.getContext(),UpdateNoteCheckDetails.class);
+                    Intent intentNoteCheckDetails = new Intent(itemView.getContext(), UpdateNoteCheckDetails.class);
 
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,itemNoteCheck.getNoteBodyCheck());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_IS_CHECK_NOTE,checkBox.isChecked());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION,getAdapterPosition());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR,cardViewCheckNote.getCardBackgroundColor().getDefaultColor());
-                     itemView.getContext().startActivity(intentNoteCheckDetails);
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, itemNoteCheck.getNoteBodyCheck());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_IS_CHECK_NOTE, checkBox.isChecked());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
+                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, cardViewCheckNote.getCardBackgroundColor().getDefaultColor());
+                    itemView.getContext().startActivity(intentNoteCheckDetails);
                 }
             });
-
-
-
-
-
 
 
         }
     }
 
 
-
-    static class itemNotePhoto  extends RecyclerView.ViewHolder{
-        private TextView  tv_note_photo;
-        private ImageView  image_note;
+    static class itemNotePhoto extends RecyclerView.ViewHolder {
+        private TextView tv_note_photo;
+        private ImageView image_note;
         private CardView cardViewPhotoNote;
 
         public itemNotePhoto(@NonNull View itemView) {
@@ -216,7 +220,8 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         }
-        void setItemNotePhoto(final NotePhoto itemNotePhoto){
+
+        void setItemNotePhoto(final NotePhoto itemNotePhoto) {
 
 
             tv_note_photo.setText(itemNotePhoto.getNoteBodyPhoto());
@@ -228,13 +233,11 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 public void onClick(View view) {
 
 
-                        Intent intentNotePhotoDetails = new Intent(itemView.getContext(), UpdateNotePhotoDetails.class);
-                        intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO,itemNotePhoto.getNoteBodyPhoto());
-                        intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO,itemNotePhoto.getNoteImage());
-                        intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION,getAdapterPosition());
-                        intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,itemNotePhoto.getBackgroundCardNoteColor());
-
-
+                    Intent intentNotePhotoDetails = new Intent(itemView.getContext(), UpdateNotePhotoDetails.class);
+                    intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO, itemNotePhoto.getNoteBodyPhoto());
+                    intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO, itemNotePhoto.getNoteImage());
+                    intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
+                    intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, itemNotePhoto.getBackgroundCardNoteColor());
 
 
                     itemView.getContext().startActivity(intentNotePhotoDetails);
@@ -244,11 +247,6 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         }
     }
-
-
-
-
-
 
 
 }

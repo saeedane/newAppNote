@@ -18,17 +18,18 @@
         <ImageView
             android:id="@+id/img_note_photo"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_photo" />
+            app:srcCompat="@drawable/ic_photo"
+            android:contentDescription="TODO" />
 
         <TextView
             android:id="@+id/tv_note_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/add_note_text"
-            android:textColor="#3D3B3B"
+            android:textColorHint="#989CA0"
             android:textSize="18sp" />
     </LinearLayout>
 

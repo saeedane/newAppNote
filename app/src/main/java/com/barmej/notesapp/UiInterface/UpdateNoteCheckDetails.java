@@ -30,33 +30,35 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
     private String checkNoteText;
     private Boolean isChecked;
     private CheckBox checkBox;
-    private int noteCheckColor;
-    private ConstraintLayout cardViewNoteCheck;
-    int position;
+    private int noteCheckColor,position;
+    private CardView cardViewNoteCheck;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_check_details);
-        cardViewNoteCheck =  findViewById(R.id.cardViewNoteCheck);
-        noteCheckColor = getIntent().getIntExtra(Constant.EXTRA_NOTE_CHECK_COLOR,0);
+        init();
+
+        // receive background color  item
+        noteCheckColor = getIntent().getIntExtra(Constant.EXTRA_NOTE_CHECK_COLOR, 0);
         cardViewNoteCheck.getBackground().setTint(noteCheckColor);
-        checkNoteEditText = findViewById(R.id.checkNoteEditText);
-        checkBox = findViewById(R.id.checkNoteCheckBox);
+        // receive text note item
         checkNoteText = getIntent().getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
-        isChecked = getIntent().getBooleanExtra(Constant.EXTRA_IS_CHECK_NOTE,false);
         checkNoteEditText.setText(checkNoteText);
+        // receive status checkbox
+        isChecked = getIntent().getBooleanExtra(Constant.EXTRA_IS_CHECK_NOTE, false);
         checkBox.setChecked(isChecked);
-        position = getIntent().getIntExtra(Constant.EXTRA_NOTE_POSITION,0);
+        // receive int position item
+        position = getIntent().getIntExtra(Constant.EXTRA_NOTE_POSITION, 0);
 
-        if (isChecked == true){
+        if (isChecked == true) {
 
-            cardViewNoteCheck.getBackground().setTint(Color.rgb(76,175,  80));
+            cardViewNoteCheck.getBackground().setTint(Color.rgb(76, 175, 80));
 
 
-        }else{
+        } else {
             cardViewNoteCheck.getBackground().setTint(noteCheckColor);
-
 
 
         }
@@ -65,12 +67,12 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
         checkBox.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (checkBox.isChecked()){
+                if (checkBox.isChecked()) {
 
                     checkBox.setChecked(true);
-                    cardViewNoteCheck.getBackground().setTint(Color.rgb(76,175,  80));
+                    cardViewNoteCheck.getBackground().setTint(Color.rgb(76, 175, 80));
 
-                }else{
+                } else {
                     checkBox.setChecked(false);
                     cardViewNoteCheck.getBackground().setTint(noteCheckColor);
 
@@ -79,29 +81,31 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
         });
 
 
+    }
 
-
-
-
+    private void init() {
+        cardViewNoteCheck = findViewById(R.id.cardViewNoteCheck);
+        checkNoteEditText = findViewById(R.id.checkNoteEditText);
+        checkBox = findViewById(R.id.checkNoteCheckBox);
     }
 
     @Override
     public void onBackPressed() {
-        if (!checkNoteEditText.getText().toString().isEmpty()){
+        if (!checkNoteEditText.getText().toString().isEmpty()) {
             super.onBackPressed();
             updateCheckNote();
-        }else{
+        } else {
 
-            Toast.makeText(getApplicationContext(), "  نص مذكرة مطلوب حتي يتم تحديث المذكرة   ", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
 
         }
     }
 
+
     private void updateCheckNote() {
 
         checkNoteText = checkNoteEditText.getText().toString();
-
-        CheckNote checkNote = new CheckNote(checkNoteText,noteCheckColor,checkBox.isChecked());
+        CheckNote checkNote = new CheckNote(checkNoteText, noteCheckColor, checkBox.isChecked());
         MainActivity.mItems.add(new Items(2, checkNote));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
@@ -110,7 +114,6 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
         finish();
 
     }
-
 
 
 }

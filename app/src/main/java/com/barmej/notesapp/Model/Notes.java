@@ -12,10 +12,10 @@ public class Notes {
     }
 
 
-
     public String getNoteBodySimple() {
         return noteBodySimple;
     }
+
     public int getBackgroundCardNoteColor() {
         return backgroundCardNoteColor;
     }
