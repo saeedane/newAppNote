@@ -2,9 +2,9 @@ package com.barmej.notesapp.Model;
 
 public class CheckNote {
 
-    private String noteBodyCheck;
-    public int backgroundCardNoteColor;
-    public boolean isChecked;
+    private String noteBodyCheck ;
+    private int backgroundCardNoteColor;
+    private boolean isChecked = false;
 
 
     public CheckNote(String noteBodyCheck, int backgroundCardNoteColor) {
@@ -27,10 +27,11 @@ public class CheckNote {
         return backgroundCardNoteColor;
     }
 
-
     public boolean isChecked() {
         return isChecked;
     }
 
-
+    public void setChecked(boolean checked) {
+        isChecked = checked;
+    }
 }

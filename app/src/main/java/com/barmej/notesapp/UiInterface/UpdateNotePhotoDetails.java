@@ -50,6 +50,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         // receive image uri item
         Uri imgPhotoUriExtra = getIntent().getParcelableExtra(Constant.EXTRA_URI_PHOTO);
         photoImageView.setImageURI(imgPhotoUriExtra);
+        imgPhotoUri = imgPhotoUriExtra;
         // receive text note photo item
         String photoNoteText = getIntent().getStringExtra(Constant.EXTRA_TEXT_PHOTO);
         photoNoteEditText.setText(photoNoteText);
@@ -80,16 +81,10 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
     }
 
 
-    private void selectPhoto() {
 
 
-        Intent intent = new Intent(Intent.ACTION_PICK);
-        intent.setType("image/*");
-        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
-        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), REQUEST_CODE_PHOTO);
-    }
 
-
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -99,6 +94,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
 
                 selectPhotoUri(data.getData());
+                getContentResolver().takePersistableUriPermission(data.getData(),Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             } else {
 
@@ -110,6 +106,15 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
         }
 
 
+    }
+
+    private void selectPhoto() {
+
+
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+        intent.setType("image/*");
+        intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), REQUEST_CODE_PHOTO);
     }
 
     private void selectPhotoUri(Uri data) {

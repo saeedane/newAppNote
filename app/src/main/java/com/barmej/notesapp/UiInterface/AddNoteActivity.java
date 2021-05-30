@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -34,13 +35,14 @@ public class AddNoteActivity extends AppCompatActivity {
     private ImageView photoImageView;
     private Uri photoImageUri;
     private TextView photoNoteEditText, noteEditText, checkNoteEditText;
+    private CheckBox checkNoteCheckBox;
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_note);
         init();
-
 
         //=========== function change type card view  note ============//
 
@@ -120,26 +122,76 @@ public class AddNoteActivity extends AppCompatActivity {
         });
 
 
+        // checkbox
+        findViewById(R.id.checkNoteCheckBox).setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onClick(View view) {
+                if (checkNoteCheckBox.isChecked()) {
+                        checkNoteCheckBox.setChecked(true);
+                        mCardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
+                        mCardViewCheckNote.getCardBackgroundColor().getDefaultColor();
+                } else {
+                    checkNoteCheckBox.setChecked(false);
+                    int noteCheckColor = mCardViewCheckNote.getCardBackgroundColor().getDefaultColor();
+                    mCardViewCheckNote.getBackground().setTint(noteCheckColor);
+
+                }
+            }
+        });
+
+
     }
 
 
-    private void extraSetResultValue(int resultOk) {
+    private void checkEmptyCardViewNotes() {
         Intent intent = new Intent();
+        if (mCardViewNote.getVisibility() == View.VISIBLE) {
 
-        // note photo
-        intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
-        intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, mCardViewPhoto.getCardBackgroundColor().getDefaultColor());
-        // note check
-        intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
-        // notes simple
-        intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
-        intent.putExtra(Constant.EXTRA_NOTE_COLOR, mCardViewNote.getCardBackgroundColor().getDefaultColor());
+            if (!noteEditText.getText().toString().isEmpty()) {
+
+                intent.putExtra(Constant.EXTRA_TEXT_NOTE, noteEditText.getText().toString());
+                intent.putExtra(Constant.EXTRA_NOTE_COLOR, mCardViewNote.getCardBackgroundColor().getDefaultColor());
+                extraSetResultValue(Activity.RESULT_OK, intent);
+
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
+            }
+        }
 
 
-        setResult(resultOk, intent);
-        finish();
+        if (mCardViewCheckNote.getVisibility() == View.VISIBLE) {
+
+            if (!checkNoteEditText.getText().toString().isEmpty()) {
+
+
+                intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
+                intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
+                intent.putExtra(Constant.EXTRA_IS_CHECK_NOTE, checkNoteCheckBox.isChecked());
+
+                extraSetResultValue(Activity.RESULT_OK, intent);
+            } else {
+
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        if (mCardViewPhoto.getVisibility() == View.VISIBLE) {
+            if (photoImageUri != null && !photoNoteEditText.getText().toString().isEmpty()) {
+                intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
+                intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
+                intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, mCardViewPhoto.getCardBackgroundColor().getDefaultColor());
+                extraSetResultValue(Activity.RESULT_OK, intent);
+
+
+            } else {
+                Toast.makeText(getApplicationContext(), R.string.validate_message_note_photo, Toast.LENGTH_SHORT).show();
+
+
+            }
+        }
+
+
     }
 
 
@@ -151,41 +203,10 @@ public class AddNoteActivity extends AppCompatActivity {
 
     }
 
-    private void checkEmptyCardViewNotes() {
+    private void extraSetResultValue(int resultOk, Intent intent) {
 
-        if (mCardViewNote.getVisibility() == View.VISIBLE) {
-            if (!noteEditText.getText().toString().isEmpty()) {
-                extraSetResultValue(Activity.RESULT_OK);
-
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
-        if (mCardViewCheckNote.getVisibility() == View.VISIBLE) {
-
-            if (!checkNoteEditText.getText().toString().isEmpty()) {
-
-                extraSetResultValue(Activity.RESULT_OK);
-            } else {
-
-                Toast.makeText(getApplicationContext(), R.string.validate_message_note_text, Toast.LENGTH_SHORT).show();
-            }
-        }
-        if (mCardViewPhoto.getVisibility() == View.VISIBLE) {
-
-            if (photoImageUri != null && !photoNoteEditText.getText().toString().isEmpty()) {
-                extraSetResultValue(Activity.RESULT_OK);
-
-
-            } else {
-                Toast.makeText(getApplicationContext(), R.string.validate_message_note_photo, Toast.LENGTH_SHORT).show();
-
-
-            }
-
-        }
+        setResult(resultOk, intent);
+        finish();
 
 
     }
@@ -206,11 +227,13 @@ public class AddNoteActivity extends AppCompatActivity {
         mCardViewCheckNote = findViewById(R.id.cardViewCheckNote);
         mCardViewNote = findViewById(R.id.cardViewNote);
         mCardViewPhoto = findViewById(R.id.cardViewPhoto);
-        // imageView
+        // note photo
         photoImageView = findViewById(R.id.photoImageView);
-        //textView
         photoNoteEditText = findViewById(R.id.photoNoteEditText);
+        // note simple
         noteEditText = findViewById(R.id.noteEditText);
+        // note check
+        checkNoteCheckBox = findViewById(R.id.checkNoteCheckBox);
         checkNoteEditText = findViewById(R.id.checkNoteEditText);
 
     }
@@ -222,6 +245,27 @@ public class AddNoteActivity extends AppCompatActivity {
 
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == REQUEST_CODE_PHOTO) {
+
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                selectPhotoUri(data.getData());
+                getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
+
+
+            } else {
+
+                Toast.makeText(getApplicationContext(), R.string.field_to_get_image, Toast.LENGTH_SHORT).show();
+            }
+
+        }
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -257,35 +301,18 @@ public class AddNoteActivity extends AppCompatActivity {
 
     }
 
+
+
+
+
+
+
     private void selectPhoto() {
 
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
         intent.setType("image/*");
         intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_photo)), REQUEST_CODE_PHOTO);
-    }
-
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == REQUEST_CODE_PHOTO) {
-
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-
-
-                selectPhotoUri(data.getData());
-
-
-            } else {
-
-                Toast.makeText(getApplicationContext(), R.string.field_to_get_image, Toast.LENGTH_SHORT).show();
-            }
-
-        }
-
     }
 
     private void selectPhotoUri(Uri data) {

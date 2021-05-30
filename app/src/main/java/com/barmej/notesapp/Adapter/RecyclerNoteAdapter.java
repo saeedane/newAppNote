@@ -51,14 +51,14 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             );
 
 
-            // 2 - note check box
+            // 1 - note photo
         } else if (viewType == 1) {
 
             return new itemNotePhoto(
 
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_photo, parent, false)
             );
-
+            // 2 - note check box
         } else {
 
             return new itemNoteCheck(
@@ -163,11 +163,13 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                 cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
                 checkBox.setChecked(true);
+                itemNoteCheck.setChecked(true);
 
             } else {
 
                 cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
                 checkBox.setChecked(false);
+                itemNoteCheck.setChecked(false);
 
             }
 
@@ -178,12 +180,15 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                     if (checkBox.isChecked()) {
                         checkBox.setChecked(true);
+                        itemNoteCheck.setChecked(true);
+
                         cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
 
 
                     } else {
                         checkBox.setChecked(false);
                         cardViewCheckNote.getBackground().setTint(itemNoteCheck.getBackgroundCardNoteColor());
+                        itemNoteCheck.setChecked(false);
 
                     }
                 }

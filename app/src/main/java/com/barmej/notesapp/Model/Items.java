@@ -1,7 +1,7 @@
 package com.barmej.notesapp.Model;
 
 public class Items {
-    private int type;
+    private  int type;
     private Object object;
 
     public Items(int type, Object object) {

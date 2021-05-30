@@ -35,12 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private int notesColor, noteCheckColor, notePhotoColor;
     private Uri imagePhoto;
     private String photoTextNote, textNote, textNoteCheck;
+    private boolean NoteCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerNote = findViewById(R.id.recycler_view_photos);
+
         mItems = new ArrayList<>();
         mAdapter = new RecyclerNoteAdapter(mItems, new OnItemLongClickListener() {
             @Override
@@ -116,16 +118,25 @@ public class MainActivity extends AppCompatActivity {
         // image uri
         imagePhoto = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
         photoTextNote = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
-        NotePhoto notePhoto = new NotePhoto(photoTextNote, imagePhoto, notePhotoColor);
-        addItemNotePhoto(notePhoto);
+
+        if (imagePhoto != null){
+            NotePhoto notePhoto = new NotePhoto(photoTextNote, imagePhoto, notePhotoColor);
+            addItemNotePhoto(notePhoto);
+
+        }
         // text note
         textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
-        Notes notes = new Notes(textNote, notesColor);
-        addItemNotes(notes);
+        if (textNote != null) {
+            Notes notes = new Notes(textNote, notesColor);
+            addItemNotes(notes);
+        }
         //text  note check
         textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
-        CheckNote NoteCheck = new CheckNote(textNoteCheck, noteCheckColor);
-        addItemNoteCheck(NoteCheck);
+        NoteCheckBox = data.getBooleanExtra(Constant.EXTRA_IS_CHECK_NOTE,false);
+        if (textNoteCheck != null) {
+            CheckNote NoteCheck = new CheckNote(textNoteCheck, noteCheckColor, NoteCheckBox);
+            addItemNoteCheck(NoteCheck);
+        }
 
 
     }
@@ -138,27 +149,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void addItemNotes(Notes notes) {
-        if (!notes.getNoteBodySimple().isEmpty()) {
             mItems.add(new Items(0, notes));
             mAdapter.notifyItemInserted(mItems.size() - 1);
-        }
+
 
     }
 
     private void addItemNotePhoto(NotePhoto notePhoto) {
-        if (notePhoto.getNoteImage() != null && notePhoto.getNoteBodyPhoto() != null) {
             mItems.add(new Items(1, notePhoto));
             mAdapter.notifyItemInserted(mItems.size() - 1);
-        }
+
 
     }
 
     private void addItemNoteCheck(CheckNote noteCheck) {
-        if (!noteCheck.getNoteBodyCheck().isEmpty()) {
             mItems.add(new Items(2, noteCheck));
             mAdapter.notifyItemInserted(mItems.size() - 1);
 
-        }
+
 
 
     }

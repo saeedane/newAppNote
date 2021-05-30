@@ -3,7 +3,7 @@ package com.barmej.notesapp.Model;
 import android.net.Uri;
 
 public class NotePhoto {
-    private String noteBodyPhoto;
+    private String noteBodyPhoto ;
     private Uri noteImage;
     private int backgroundCardNoteColor;
 
