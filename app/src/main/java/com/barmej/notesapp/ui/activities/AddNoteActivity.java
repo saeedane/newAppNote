@@ -1,11 +1,10 @@
-package com.barmej.notesapp.UiInterface;
+package com.barmej.notesapp.ui.activities;
 
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,9 +21,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
-import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
-import com.barmej.notesapp.Constant;
-import com.barmej.notesapp.Model.CheckNote;
+import com.barmej.notesapp.data.Model.NotePhoto;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.R;
 
 
@@ -168,6 +166,7 @@ public class AddNoteActivity extends AppCompatActivity {
                 intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
                 intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
                 intent.putExtra(Constant.EXTRA_IS_CHECK_NOTE, checkNoteCheckBox.isChecked());
+
 
                 extraSetResultValue(Activity.RESULT_OK, intent);
             } else {

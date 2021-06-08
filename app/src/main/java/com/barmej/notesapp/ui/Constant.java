@@ -1,4 +1,4 @@
-package com.barmej.notesapp;
+package com.barmej.notesapp.ui;
 
 public class Constant {
     public static final String EXTRA_URI_PHOTO = "KEY_URI_PHOTO";

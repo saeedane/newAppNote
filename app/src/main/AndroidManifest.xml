@@ -11,17 +11,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UiInterface.MainActivity">
+        <activity android:name=".ui.activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".UiInterface.AddNoteActivity" android:parentActivityName=".UiInterface.MainActivity"/>
-        <activity android:name=".UiInterface.UpdateNoteDetails" android:parentActivityName=".UiInterface.MainActivity"/>
-        <activity android:name=".UiInterface.UpdateNoteCheckDetails" android:parentActivityName=".UiInterface.MainActivity"/>
-        <activity android:name=".UiInterface.UpdateNotePhotoDetails" android:parentActivityName=".UiInterface.MainActivity"/>
+        <activity android:name=".ui.activities.AddNoteActivity" android:parentActivityName=".ui.activities.MainActivity"/>
+        <activity android:name=".ui.activities.UpdateNoteDetails" android:parentActivityName=".ui.activities.MainActivity"/>
+        <activity android:name=".ui.activities.UpdateNoteCheckDetails" android:parentActivityName=".ui.activities.MainActivity"/>
+        <activity android:name=".ui.activities.UpdateNotePhotoDetails" android:parentActivityName=".ui.activities.MainActivity"/>
 
     </application>
 

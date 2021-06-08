@@ -1,4 +1,4 @@
-package com.barmej.notesapp.Interface;
+package com.barmej.notesapp.ui.Interface;
 
 public interface OnItemLongClickListener {
 

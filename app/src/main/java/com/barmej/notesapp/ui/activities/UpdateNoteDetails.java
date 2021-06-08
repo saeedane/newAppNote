@@ -1,8 +1,7 @@
-package com.barmej.notesapp.UiInterface;
+package com.barmej.notesapp.ui.activities;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -11,10 +10,9 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.Constant;
-import com.barmej.notesapp.Model.CheckNote;
-import com.barmej.notesapp.Model.Items;
-import com.barmej.notesapp.Model.Notes;
+import com.barmej.notesapp.ui.Constant;
+import com.barmej.notesapp.data.Model.Items;
+import com.barmej.notesapp.data.Model.Notes;
 import com.barmej.notesapp.R;
 
 public class UpdateNoteDetails extends AppCompatActivity {

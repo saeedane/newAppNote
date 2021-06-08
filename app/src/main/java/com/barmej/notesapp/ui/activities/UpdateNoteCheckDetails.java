@@ -1,12 +1,8 @@
-package com.barmej.notesapp.UiInterface;
+package com.barmej.notesapp.ui.activities;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -16,13 +12,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
 
-import com.barmej.notesapp.Adapter.RecyclerNoteAdapter;
-import com.barmej.notesapp.Constant;
-import com.barmej.notesapp.Model.CheckNote;
-import com.barmej.notesapp.Model.Items;
-import com.barmej.notesapp.Model.NotePhoto;
+import com.barmej.notesapp.ui.Constant;
+import com.barmej.notesapp.data.Model.CheckNote;
+import com.barmej.notesapp.data.Model.Items;
 import com.barmej.notesapp.R;
 
 public class UpdateNoteCheckDetails extends AppCompatActivity {

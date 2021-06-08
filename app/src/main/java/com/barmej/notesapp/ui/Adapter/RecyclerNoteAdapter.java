@@ -1,8 +1,9 @@
-package com.barmej.notesapp.Adapter;
+package com.barmej.notesapp.ui.Adapter;
 
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,18 +16,20 @@ import androidx.annotation.RequiresApi;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.barmej.notesapp.Constant;
-import com.barmej.notesapp.Interface.OnItemLongClickListener;
-import com.barmej.notesapp.Model.CheckNote;
-import com.barmej.notesapp.Model.Items;
-import com.barmej.notesapp.Model.NotePhoto;
-import com.barmej.notesapp.Model.Notes;
+import com.barmej.notesapp.data.Model.NotesApp;
+import com.barmej.notesapp.ui.Constant;
+import com.barmej.notesapp.ui.Interface.OnItemLongClickListener;
+import com.barmej.notesapp.data.Model.CheckNote;
+import com.barmej.notesapp.data.Model.Items;
+import com.barmej.notesapp.data.Model.NotePhoto;
+import com.barmej.notesapp.data.Model.Notes;
 import com.barmej.notesapp.R;
-import com.barmej.notesapp.UiInterface.UpdateNoteCheckDetails;
-import com.barmej.notesapp.UiInterface.UpdateNoteDetails;
-import com.barmej.notesapp.UiInterface.UpdateNotePhotoDetails;
+import com.barmej.notesapp.ui.activities.UpdateNoteCheckDetails;
+import com.barmej.notesapp.ui.activities.UpdateNoteDetails;
+import com.barmej.notesapp.ui.activities.UpdateNotePhotoDetails;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -229,26 +232,9 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void setItemNotePhoto(final NotePhoto itemNotePhoto) {
 
 
-            tv_note_photo.setText(itemNotePhoto.getNoteBodyPhoto());
-            image_note.setImageURI(itemNotePhoto.getNoteImage());
-            cardViewPhotoNote.setCardBackgroundColor(itemNotePhoto.getBackgroundCardNoteColor());
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-
-                    Intent intentNotePhotoDetails = new Intent(itemView.getContext(), UpdateNotePhotoDetails.class);
-                    intentNotePhotoDetails.putExtra(Constant.EXTRA_TEXT_PHOTO, itemNotePhoto.getNoteBodyPhoto());
-                    intentNotePhotoDetails.putExtra(Constant.EXTRA_URI_PHOTO, itemNotePhoto.getNoteImage());
-                    intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
-                    intentNotePhotoDetails.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, itemNotePhoto.getBackgroundCardNoteColor());
-
-
-                    itemView.getContext().startActivity(intentNotePhotoDetails);
-
-                }
-            });
+            tv_note_photo.setText(itemNotePhoto.getDescription());
+            image_note.setImageURI(itemNotePhoto.getImage());
+            cardViewPhotoNote.setCardBackgroundColor(itemNotePhoto.getColor());
 
         }
     }
