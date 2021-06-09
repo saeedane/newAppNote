@@ -12,32 +12,36 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import com.barmej.notesapp.ui.Adapter.RecyclerNoteAdapter;
-import com.barmej.notesapp.ui.Constant;
+import com.barmej.notesapp.ui.Adapter.Constant;
 import com.barmej.notesapp.ui.Interface.OnItemLongClickListener;
-import com.barmej.notesapp.data.Model.CheckNote;
-import com.barmej.notesapp.data.Model.Items;
-import com.barmej.notesapp.data.Model.NotePhoto;
-import com.barmej.notesapp.data.Model.Notes;
+import com.barmej.notesapp.data.database.model.CheckNote;
+import com.barmej.notesapp.data.database.model.Items;
+import com.barmej.notesapp.data.database.model.NotePhoto;
+import com.barmej.notesapp.data.database.model.Notes;
 import com.barmej.notesapp.R;
 import com.barmej.notesapp.viewmodel.NoteModelView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
 
     private static final int REQUEST_ADD_DATA = 101;
+    private static final String TAG = MainActivity.class.getSimpleName();
     public static RecyclerNoteAdapter mAdapter;
     private RecyclerView mRecyclerNote;
     public static ArrayList<Items> mItems;
-    private int notesColor, noteCheckColor, notePhotoColor;
-    private Uri imagePhoto;
+    //private int notesColor, noteCheckColor, notePhotoColor;
+    //private Uri imagePhoto;
     private boolean NoteCheckBox;
     private NoteModelView noteModelView;
+    public static final int EXTRA_POSITION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,16 +66,33 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        noteModelView.getAllNotes().observe(this, new Observer<NotePhoto>() {
+            @Override
+            public void onChanged(NotePhoto notePhoto) {
+
+
+                mAdapter.setNote(notePhoto,1);
+
+
+            }
+        });
+    }
+
     private void deleteItem(final int position) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setMessage("هل أنت متأكد من حذف هذا العنصر ");
         dialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 try {
-                    mItems.remove(position);
+                    noteModelView.deleteAll();
                     mAdapter.notifyItemRemoved(position);
+                    mItems.remove(position);
                     mAdapter.notifyDataSetChanged();
 
                 } catch (Exception e) {
@@ -94,24 +115,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickAddNoteActivity(View view) {
         Intent intent = new Intent(MainActivity.this, AddNoteActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent,REQUEST_ADD_DATA);
 
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        noteModelView.getAllNotes().observe(this, new Observer<NotePhoto>() {
-            @Override
-            public void onChanged(NotePhoto notePhoto) {
-                addItemNotePhoto(notePhoto);
-                mAdapter.notifyDataSetChanged();
 
-            }
-        });
-
-
-    }
 
 
     @Override
@@ -133,42 +141,35 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getExtraDataNote(Intent data) {
-        getExtraColorCardView(data);
-        // image uri
-        Uri image = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
-        String photoTextNote = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
-
-        if (image != null){
-            NotePhoto notePhoto = new NotePhoto(photoTextNote, image, notePhotoColor);
-            noteModelView.insert(notePhoto);
-
-            Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
-
-
-        }
+        //getExtraColorCardView(data);
+        insertNotePhoto(data);
         // text note
         String textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
         if (textNote != null) {
-            Notes notes = new Notes(textNote, notesColor);
+           // Notes notes = new Notes(textNote, notesColor);
             //addItemNotes(notes);
         }
         //text  note check
         String textNoteCheck = data.getStringExtra(Constant.EXTRA_TEXT_CHECK_NOTE);
         NoteCheckBox = data.getBooleanExtra(Constant.EXTRA_IS_CHECK_NOTE,false);
         if (textNoteCheck != null) {
-            CheckNote NoteCheck = new CheckNote(textNoteCheck, noteCheckColor, NoteCheckBox);
+         //   CheckNote NoteCheck = new CheckNote(textNoteCheck, noteCheckColor, NoteCheckBox);
            // addItemNoteCheck(NoteCheck);
         }
 
 
     }
 
+    /*
     private void getExtraColorCardView(Intent data) {
         // get color card view
         notesColor = data.getIntExtra(Constant.EXTRA_NOTE_COLOR, 0);
         noteCheckColor = data.getIntExtra(Constant.EXTRA_NOTE_CHECK_COLOR, 0);
         notePhotoColor = data.getIntExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, 0);
     }
+
+
+     */
 
     /*
     private void addItemNotes(Notes notes) {
@@ -181,9 +182,25 @@ public class MainActivity extends AppCompatActivity {
     */
 
 
-    private void addItemNotePhoto(NotePhoto notePhoto) {
+    private void insertNotePhoto(Intent data) {
 
-            mItems.add(new Items(1, notePhoto));
+        // image uri
+        Uri image = data.getParcelableExtra(Constant.EXTRA_URI_PHOTO);
+        String photoTextNote = data.getStringExtra(Constant.EXTRA_TEXT_PHOTO);
+        int notePhotoColor = data.getIntExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,0);
+
+
+        if (image != null){
+            NotePhoto notePhoto = new NotePhoto(photoTextNote, image, notePhotoColor);
+            noteModelView.insert(notePhoto);
+            Log.v(TAG,"note data : " + notePhoto);
+            Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(),"color : "+notePhotoColor,Toast.LENGTH_SHORT).show();
+
+
+
+
+        }
 
 
     }

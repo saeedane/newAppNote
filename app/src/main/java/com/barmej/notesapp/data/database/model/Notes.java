@@ -1,4 +1,4 @@
-package com.barmej.notesapp.data.Model;
+package com.barmej.notesapp.data.database.model;
 
 public class Notes {
 

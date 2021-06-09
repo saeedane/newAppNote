@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.barmej.notesapp.data.Model.NotePhoto;
+import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.NoteDataRepository;
 
 import java.util.List;
@@ -20,16 +20,16 @@ public class NoteModelView extends AndroidViewModel {
         allNotePhoto = repository.getNotePhotoInfo();
     }
 
-    public void insert(NotePhoto note){
-        repository.insert(note);
+    public void insert(NotePhoto notePhoto){
+        repository.insert(notePhoto);
     }
 
-    public void update(NotePhoto note){
-        repository.update(note);
+    public void update(NotePhoto notePhoto){
+        repository.update(notePhoto);
     }
 
-    public void delete(NotePhoto note){
-        repository.delete(note);
+    public void delete(NotePhoto notePhoto){
+        repository.delete(notePhoto);
     }
 
     public void deleteAll(){
@@ -37,6 +37,7 @@ public class NoteModelView extends AndroidViewModel {
     }
 
     public LiveData<NotePhoto> getAllNotes (){
+
         return allNotePhoto;
     }
 }

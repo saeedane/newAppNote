@@ -5,14 +5,14 @@ import android.content.Context;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverter;
 import androidx.room.TypeConverters;
 
-import com.barmej.notesapp.data.Model.NotePhoto;
+import com.barmej.notesapp.data.database.dao.CheckNoteDao;
+import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.database.converters.UriConverters;
 import com.barmej.notesapp.data.database.dao.NotePhotoDao;
 
-@Database(entities = {NotePhoto.class}, version =2, exportSchema = false)
+@Database(entities = {NotePhoto.class}, version = 5, exportSchema = false)
 @TypeConverters({UriConverters.class})
 public abstract class AppDatabase  extends RoomDatabase {
 
@@ -45,7 +45,7 @@ public abstract class AppDatabase  extends RoomDatabase {
                         context.getApplicationContext(),
                         AppDatabase.class,
                         AppDatabase.DATABASE_NAME
-                ).build();
+                ).fallbackToDestructiveMigration().build();
             }
         }
         return sInstance;
@@ -57,5 +57,8 @@ public abstract class AppDatabase  extends RoomDatabase {
      * @return an instance of weatherInfoDao
      */
     public abstract NotePhotoDao notePhotoDao();
+    public abstract CheckNoteDao checkNoteDao();
+
+
 
 }

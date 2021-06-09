@@ -11,7 +11,5 @@
 
 
 
-    <style name="AlertDialogTheme.Light" parent="ThemeOverlay.MaterialComponents.Dialog.Alert" >
-        <item name="android:buttonBarButtonStyle">@style/Widget.MaterialComponents.Button</item>
-    </style>
+
 </resources>

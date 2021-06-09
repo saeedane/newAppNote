@@ -1,4 +1,6 @@
-package com.barmej.notesapp.data.Model;
+package com.barmej.notesapp.data.database.model;
+
+import java.util.List;
 
 public class Items {
     private  int type;

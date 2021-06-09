@@ -1,31 +1,29 @@
 package com.barmej.notesapp.data.database.dao;
 
 import androidx.lifecycle.LiveData;
-import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
+import com.barmej.notesapp.data.database.model.CheckNote;
 import com.barmej.notesapp.data.database.model.NotePhoto;
 
-import java.util.List;
-
-@Dao
-public interface NotePhotoDao {
+public interface CheckNoteDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(NotePhoto notePhoto);
+    void insert(CheckNote checkNote);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(NotePhoto notePhoto);
+    void update(CheckNote checkNote);
 
     @Delete
-    void delete(NotePhoto notePhoto);
+    void delete(CheckNote checkNote);
 
     @Query(" DELETE FROM note_table_photo")
     void deleteAll ();
 
     @Query("SELECT * FROM note_table_photo  ")
-    LiveData<NotePhoto> getAllNotePhotos();
+    LiveData<CheckNote> getAllNoteCheck();
+
 }

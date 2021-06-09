@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/cardViewPhotoNote"
-    android:layout_width="match_parent"
-    android:layout_height="200dp"
-    app:cardCornerRadius="4dp"
-    app:cardElevation="4dp"
-    app:cardUseCompatPadding="true"
-    app:contentPadding="16dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <LinearLayout
+        <import type="com.barmej.notesapp.data.database.model.NotePhoto"/>
+
+        <variable
+            name="notes"
+            type="NotePhoto" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewPhotoNote"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="200dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="16dp">
 
-        <ImageView
-            android:id="@+id/img_note_photo"
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:scaleType="fitCenter"
-            app:srcCompat="@drawable/ic_photo"
-            android:contentDescription="TODO" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tv_note_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/add_note_text"
-            android:textColorHint="#989CA0"
-            android:textSize="18sp" />
-    </LinearLayout>
+            <ImageView
+                tools:ignore="VectorDrawableCompat"
+                android:id="@+id/img_note_photo"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:scaleType="fitCenter"
+                tools:src="@drawable/ic_photo"
+                android:contentDescription="TODO"
+                android:imageUri="@{notes.image ?? ``}"
 
-</androidx.cardview.widget.CardView>
+
+                />
+
+            <TextView
+                android:id="@+id/tv_note_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@{notes.description}"
+                android:textColorHint="#989CA0"
+
+                android:textSize="18sp" />
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

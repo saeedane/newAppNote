@@ -7,7 +7,9 @@ import android.os.Build;
 
 import androidx.lifecycle.LiveData;
 
-import com.barmej.notesapp.data.Model.NotePhoto;
+import com.barmej.notesapp.data.database.dao.CheckNoteDao;
+import com.barmej.notesapp.data.database.model.CheckNote;
+import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.database.AppDatabase;
 import com.barmej.notesapp.data.database.dao.NotePhotoDao;
 
@@ -38,6 +40,7 @@ public class NoteDataRepository {
 }
  */
 private NotePhotoDao notePhotoDao;
+private CheckNoteDao checkNoteDao;
 
 
  /**
@@ -63,27 +66,29 @@ public static NoteDataRepository getInstance(Context context) {
     private NoteDataRepository(Context context) {
         mAppDatabase = AppDatabase.getInstance(context);
         notePhotoDao = mAppDatabase.notePhotoDao();
+        checkNoteDao = mAppDatabase.checkNoteDao();
 
     }
 
 
-    // Room doesn't allow database operations run in the Main thread
+    // Room doesn't allow database operations run in the Main thread note photo
 
-    public void insert(NotePhoto note){
+    public void insertNotePhoto(NotePhoto note){
         new InsetNoteAsyncTask(notePhotoDao).execute(note);
     }
 
-    public void delete(NotePhoto note){
+    public void deleteNotePhoto(NotePhoto note){
         new DeleteAsyncTask(notePhotoDao).execute(note);
     }
 
-    public void update(NotePhoto note){
+    public void updateNotePhoto(NotePhoto note){
         new UpdateAsyncTask(notePhotoDao).execute(note);
     }
 
-    public void deleteAllNotes(){
+    public void deleteAllNotePhoto(){
         new DeleteAllNoteAsyncTask(notePhotoDao).execute();
     }
+
 
 
 
@@ -97,44 +102,27 @@ public static NoteDataRepository getInstance(Context context) {
         return mAppDatabase.notePhotoDao().getAllNotePhotos();
     }
 
-    /**
-     * Empty weather info table and save new weather info to database
-     */
-    public void updateWeatherInfo() {
-
-
+    public LiveData<CheckNote> getCheckNoteInfo() {
+        // Get LiveData object from database using Room
+        return mAppDatabase.checkNoteDao().getAllNoteCheck();
     }
 
-    /**
-     * Empty forecasts table and save new forecasts info to database
-     */
-    public void updateForecastLists() {
-
-
-
-    }
-
-
-    /**
-     * Cancel all data requests
-     */
-    public void cancelDataRequests() {
-
-    }
 
 
     // Insert AsyncTask
     private static class InsetNoteAsyncTask extends AsyncTask<NotePhoto,Void,Void> {
 
-        private NotePhotoDao noteDAO;
+        private NotePhotoDao notePhotoDao;
+        private CheckNoteDao checkNoteDao;
 
-        private InsetNoteAsyncTask(NotePhotoDao noteDAO){
-            this.noteDAO = noteDAO;
+        private InsetNoteAsyncTask(NotePhotoDao notePhotoDao){
+            this.notePhotoDao = notePhotoDao;
+            this.notePhotoDao = notePhotoDao;
         }
 
         @Override
         protected Void doInBackground(NotePhoto... notes) {
-            noteDAO.insert(notes[0]);
+            notePhotoDao.insert(notes[0]);
             return null;
         }
     }
@@ -142,15 +130,15 @@ public static NoteDataRepository getInstance(Context context) {
     // Delete AsyncTask
     private static class DeleteAsyncTask extends AsyncTask<NotePhoto, Void, Void>{
 
-        private  NotePhotoDao noteDAO;
+        private  NotePhotoDao notePhotoDao;
 
         private DeleteAsyncTask(NotePhotoDao noteDAO){
-            this.noteDAO = noteDAO;
+            this.notePhotoDao = noteDAO;
         }
 
         @Override
         protected Void doInBackground(NotePhoto... notes) {
-            noteDAO.delete(notes[0]);
+            notePhotoDao.delete(notes[0]);
             return null;
         }
     }
@@ -158,15 +146,15 @@ public static NoteDataRepository getInstance(Context context) {
     // Update AsyncTask
     private static class UpdateAsyncTask extends AsyncTask<NotePhoto, Void, Void>{
 
-        private NotePhotoDao noteDAO;
+        private NotePhotoDao notePhotoDao;
 
-        private UpdateAsyncTask(NotePhotoDao noteDAO){
-            this.noteDAO = noteDAO;
+        private UpdateAsyncTask(NotePhotoDao notePhotoDao){
+            this.notePhotoDao = notePhotoDao;
         }
 
         @Override
         protected Void doInBackground(NotePhoto... notes) {
-            noteDAO.update(notes[0]);
+            notePhotoDao.update(notes[0]);
             return null;
         }
     }
@@ -174,15 +162,15 @@ public static NoteDataRepository getInstance(Context context) {
     // Delete All Notes AsyncTask
     private static class DeleteAllNoteAsyncTask extends AsyncTask<Void,Void,Void> {
 
-        private NotePhotoDao noteDAO;
+        private NotePhotoDao notePhotoDao;
 
-        private DeleteAllNoteAsyncTask(NotePhotoDao noteDAO){
-            this.noteDAO = noteDAO;
+        private DeleteAllNoteAsyncTask(NotePhotoDao notePhotoDao){
+            this.notePhotoDao = notePhotoDao;
         }
 
         @Override
         protected Void doInBackground(Void... voids) {
-            noteDAO.deleteAll();
+            notePhotoDao.deleteAll();
             return null;
         }
     }
