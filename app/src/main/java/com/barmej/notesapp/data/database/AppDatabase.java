@@ -10,10 +10,12 @@ import androidx.room.TypeConverters;
 import com.barmej.notesapp.data.database.converters.UriConverters;
 import com.barmej.notesapp.data.database.dao.CheckNoteDao;
 import com.barmej.notesapp.data.database.dao.NotePhotoDao;
-import com.barmej.notesapp.data.database.model.CheckNote;
-import com.barmej.notesapp.data.database.model.NotePhoto;
+import com.barmej.notesapp.data.database.dao.NotesDao;
+import com.barmej.notesapp.data.model.CheckNote;
+import com.barmej.notesapp.data.model.NotePhoto;
+import com.barmej.notesapp.data.model.Notes;
 
-@Database(entities = {NotePhoto.class, CheckNote.class}, version = 8, exportSchema = false)
+@Database(entities = {NotePhoto.class, CheckNote.class, Notes.class}, version = 3, exportSchema = false)
 @TypeConverters({UriConverters.class})
 public abstract class AppDatabase  extends RoomDatabase {
 
@@ -59,6 +61,7 @@ public abstract class AppDatabase  extends RoomDatabase {
      */
     public abstract NotePhotoDao notePhotoDao();
     public abstract CheckNoteDao checkNoteDao();
+    public abstract NotesDao notesDao();
 
 
 

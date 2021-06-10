@@ -16,17 +16,16 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.barmej.notesapp.data.database.model.CheckNote;
+import com.barmej.notesapp.data.model.CheckNote;
+import com.barmej.notesapp.data.model.Notes;
 import com.barmej.notesapp.ui.Adapter.RecyclerNoteAdapter;
-import com.barmej.notesapp.ui.Constant;
-import com.barmej.notesapp.ui.Interface.OnItemLongClickListener;
-import com.barmej.notesapp.data.database.model.Items;
-import com.barmej.notesapp.data.database.model.NotePhoto;
+import com.barmej.notesapp.ui.Adapter.Listener.OnItemLongClickListener;
+import com.barmej.notesapp.data.model.Items;
+import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.R;
 import com.barmej.notesapp.viewmodel.NoteModelView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,27 +47,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mRecyclerNote = findViewById(R.id.recycler_view_photos);
         noteModelView = ViewModelProviders.of(this).get(NoteModelView.class);
-
-        mItems = new ArrayList<>();
-        mAdapter = new RecyclerNoteAdapter(mItems, new OnItemLongClickListener() {
+        noteModelView.getAllSimpleNote().observe(this, new Observer<Notes>() {
             @Override
-            public void onLongItem(int position) {
-
-                deleteItem(position);
+            public void onChanged(Notes notes) {
+                mAdapter.setNote(notes,0);
 
             }
         });
-        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerNote.setHasFixedSize(true);
-        mRecyclerNote.setLayoutManager(staggeredGridLayoutManager);
-        mRecyclerNote.setAdapter(mAdapter);
-
-    }
 
 
-    @Override
-    protected void onResume() {
-        super.onResume();
         noteModelView.getAllNotePhoto().observe(this, new Observer<NotePhoto>() {
             @Override
             public void onChanged(NotePhoto notePhotos) {
@@ -84,7 +71,25 @@ public class MainActivity extends AppCompatActivity {
                 mAdapter.setNote(checkNote,2);
             }
         });
+        mItems = new ArrayList<>();
+        mAdapter = new RecyclerNoteAdapter(mItems, new OnItemLongClickListener() {
+            @Override
+            public void onLongItem(int position) {
+
+                deleteItem(position);
+
+            }
+        });
+
+
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerNote.setHasFixedSize(true);
+        mRecyclerNote.setLayoutManager(staggeredGridLayoutManager);
+        mRecyclerNote.setAdapter(mAdapter);
+
     }
+
+
 
     private void deleteItem(final int position) {
          AlertDialog.Builder dialog = new AlertDialog.Builder(this);
@@ -148,16 +153,28 @@ public class MainActivity extends AppCompatActivity {
         //getExtraColorCardView(data);
         insertNotePhoto(data);
         // text note
-        String textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
-        if (textNote != null) {
-           // Notes notes = new Notes(textNote, notesColor);
-            //addItemNotes(notes);
-        }
+       insertSimpleNote(data);
 
         // checked note
         insertNoteChecked(data);
 
 
+    }
+
+    private void insertSimpleNote(Intent data) {
+        String textNote = data.getStringExtra(Constant.EXTRA_TEXT_NOTE);
+        int noteSimpleColor = data.getIntExtra(Constant.EXTRA_NOTE_COLOR,0);
+
+        Notes notes = new Notes(textNote, noteSimpleColor);
+        if (notes != null) {
+            noteModelView.insertSimpleNotes(notes);
+            Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
+
+
+        }else{
+            Toast.makeText(this, "note field", Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     private void insertNoteChecked(Intent data) {
@@ -171,7 +188,6 @@ public class MainActivity extends AppCompatActivity {
 
         if (checkNote != null){
             noteModelView.insertNoteCheck(checkNote);
-            Log.v(TAG,"note data : " + checkNote);
             Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
         }else{
             Toast.makeText(this, "note field", Toast.LENGTH_SHORT).show();

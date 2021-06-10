@@ -6,19 +6,20 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.barmej.notesapp.data.database.model.CheckNote;
-import com.barmej.notesapp.data.database.model.NotePhoto;
+import com.barmej.notesapp.data.model.CheckNote;
+import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.data.NoteDataRepository;
-
-import java.util.List;
+import com.barmej.notesapp.data.model.Notes;
 
 public class NoteModelView extends AndroidViewModel {
     private NoteDataRepository repository;
     private LiveData<NotePhoto> allNotePhoto;
     private LiveData<CheckNote> allNoteCheck;
+    private LiveData<Notes> allSimpleNote;
     public NoteModelView(@NonNull Application application) {
         super(application);
         repository = NoteDataRepository.getInstance(application);
+        allSimpleNote = repository.getSimpleNoteInfo();
         allNotePhoto = repository.getNotePhotoInfo();
         allNoteCheck = repository.getCheckedNoteInfo();
     }
@@ -46,7 +47,7 @@ public class NoteModelView extends AndroidViewModel {
 
 
     /**
-     * repository get note checked
+     *  get note checked repository
      */
 
 
@@ -70,5 +71,33 @@ public class NoteModelView extends AndroidViewModel {
 
         return allNoteCheck;
     }
+
+
+
+
+    /**
+     *  get note checked repository
+     */
+    public void insertSimpleNotes(Notes notes){
+        repository.insertSimpleNotes(notes);
+    }
+
+    public void updateSimpleNotes(Notes notes){
+        repository.updateSimpleNotes(notes);
+    }
+
+    public void deleteSimpleNotes(Notes notes){
+        repository.deleteSimpleNotes(notes);
+    }
+
+    public void deleteAllSimpleNotes(){
+        repository.deleteAllSimpleNotes();
+    }
+
+    public LiveData<Notes> getAllSimpleNote(){
+
+        return allSimpleNote;
+    }
+
 
 }

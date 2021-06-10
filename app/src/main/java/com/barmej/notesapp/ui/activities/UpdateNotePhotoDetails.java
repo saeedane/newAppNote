@@ -14,12 +14,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.ui.Constant;
-import com.barmej.notesapp.data.database.model.Items;
-import com.barmej.notesapp.data.database.model.NotePhoto;
+import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.R;
-
-import java.util.List;
 
 public class UpdateNotePhotoDetails extends AppCompatActivity {
     private static final int REQUEST_CODE_PHOTO = 101;

@@ -1,34 +1,26 @@
 package com.barmej.notesapp.ui.Adapter;
 
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
-import androidx.cardview.widget.CardView;
 import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.barmej.notesapp.R;
-import com.barmej.notesapp.data.database.model.CheckNote;
-import com.barmej.notesapp.data.database.model.Items;
-import com.barmej.notesapp.data.database.model.NotePhoto;
-import com.barmej.notesapp.data.database.model.Notes;
+import com.barmej.notesapp.data.model.CheckNote;
+import com.barmej.notesapp.data.model.Items;
+import com.barmej.notesapp.data.model.NotePhoto;
+import com.barmej.notesapp.data.model.Notes;
+import com.barmej.notesapp.databinding.ItemNoteBinding;
 import com.barmej.notesapp.databinding.ItemNoteCheckBinding;
 import com.barmej.notesapp.databinding.ItemNotePhotoBinding;
-import com.barmej.notesapp.ui.Constant;
-import com.barmej.notesapp.ui.Interface.OnItemLongClickListener;
-import com.barmej.notesapp.ui.activities.UpdateNoteCheckDetails;
-import com.barmej.notesapp.ui.activities.UpdateNoteDetails;
+import com.barmej.notesapp.ui.Adapter.Listener.OnItemLongClickListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -36,9 +28,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
    private List<Items> mItems;
     private OnItemLongClickListener onItemLongClickListener;
-    private int NOTE_TYPE_IMAGE = 1;
-    private int NOTE_TYPE_TEXT = 2;
-    private int NOTE_TYPE_CHECKD = 2;
+
 
 
     public RecyclerNoteAdapter(List<Items> mItems, OnItemLongClickListener onItemLongClickListener) {
@@ -52,13 +42,9 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         // 1 - simple note
         if (viewType == 0) {
-            return new itemNote(
-
-
-
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note, parent, false)
-            );
-
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ItemNoteBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_note,parent,false);
+            return new itemNote(binding);
 
             // 1 - note photo
         } else if (viewType == 1) {
@@ -130,20 +116,16 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     static class itemNote extends RecyclerView.ViewHolder {
-        TextView tv_note_simple;
-        CardView cardViewNotes;
-
-
-        itemNote(@NonNull View itemView) {
-            super(itemView);
-            tv_note_simple = itemView.findViewById(R.id.tv_note_simple);
-            cardViewNotes = itemView.findViewById(R.id.cardViewNotes);
+        ItemNoteBinding binding;
+        itemNote(@NonNull ItemNoteBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
         }
 
         void setItemNote(final Notes notes) {
 
-            tv_note_simple.setText(notes.getNoteBodySimple());
-            cardViewNotes.setCardBackgroundColor(notes.getBackgroundCardNoteColor());
+            binding.setNotes(notes);
+            /*
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -155,6 +137,9 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                     itemView.getContext().startActivity(intentNoteCheckDetails);
                 }
             });
+
+            */
+
 
 
         }
@@ -173,7 +158,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void setItemNoteCheck(final CheckNote itemNoteCheck) {
-            binding.setNotes(itemNoteCheck);
+            binding.setCheckNote(itemNoteCheck);
 
         }
     }
@@ -190,7 +175,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
         void setItemNotePhoto(NotePhoto notePhoto) {
 
-            binding.setNotes(notePhoto);
+            binding.setNoteImage(notePhoto);
 
 
 

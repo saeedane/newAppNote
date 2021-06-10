@@ -5,10 +5,10 @@
 
     <data>
 
-        <import type="com.barmej.notesapp.data.database.model.NotePhoto"/>
+        <import type="com.barmej.notesapp.data.model.NotePhoto"/>
 
         <variable
-            name="notes"
+            name="note_image"
             type="NotePhoto" />
     </data>
 
@@ -18,7 +18,7 @@
         android:layout_height="200dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
-        app:cardBackgroundColor="@{notes.color}"
+        app:cardBackgroundColor="@{note_image.color}"
         app:cardUseCompatPadding="true"
         app:contentPadding="16dp">
 
@@ -37,18 +37,15 @@
                 android:scaleType="fitCenter"
                 tools:src="@drawable/ic_photo"
                 android:contentDescription="TODO"
-                android:imageUri="@{notes.image ?? ``}"
-
-
+                app:imageUrl="@{note_image.image ?? ``}"
                 />
 
             <TextView
                 android:id="@+id/tv_note_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@{notes.description}"
+                android:text="@{note_image.description}"
                 android:textColorHint="#989CA0"
-
                 android:textSize="18sp" />
         </LinearLayout>
 

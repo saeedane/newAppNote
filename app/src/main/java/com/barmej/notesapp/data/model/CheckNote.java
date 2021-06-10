@@ -1,11 +1,10 @@
-package com.barmej.notesapp.data.database.model;
+package com.barmej.notesapp.data.model;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "check_note_table")
 public class CheckNote {
-
     @PrimaryKey
     private int id;
     private String title ;

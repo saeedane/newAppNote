@@ -1,4 +1,4 @@
-package com.barmej.notesapp.data.database.model;
+package com.barmej.notesapp.data.model;
 
 public class Items {
     private  int type;

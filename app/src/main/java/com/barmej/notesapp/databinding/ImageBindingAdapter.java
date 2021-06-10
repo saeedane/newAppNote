@@ -1,14 +1,15 @@
 package com.barmej.notesapp.databinding;
 
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.widget.ImageView;
 
 import androidx.databinding.BindingAdapter;
 
 public class ImageBindingAdapter {
-    @BindingAdapter({"android:imageUri"})
-    public static void setImageViewResource(ImageView imageView, Uri uri) {
-        imageView.setImageURI(uri);
-    }
 
+    @BindingAdapter("imageUrl")
+    public static void setImageUrl(ImageView view, Uri uri) {
+        view.setImageURI(uri);
+    }
 }

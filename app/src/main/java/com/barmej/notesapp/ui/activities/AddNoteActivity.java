@@ -21,7 +21,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
-import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.R;
 
 

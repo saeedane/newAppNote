@@ -4,10 +4,10 @@
 
     <data>
 
-        <import type="com.barmej.notesapp.data.database.model.CheckNote"/>
+        <import type="com.barmej.notesapp.data.model.CheckNote"/>
 
         <variable
-            name="notes"
+            name="check_note"
             type="CheckNote" />
     </data>
 
@@ -19,8 +19,7 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="4dp"
         app:cardUseCompatPadding="true"
-        app:cardBackgroundColor="@{notes.color}"
-
+        app:cardBackgroundColor="@{check_note.color}"
         app:contentPadding="16dp">
 
         <RelativeLayout
@@ -32,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:text="@{notes.title}"
+                android:text="@{check_note.title}"
                 android:textAlignment="textStart"
                 android:textColorHint="#989CA0"
 

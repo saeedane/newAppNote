@@ -9,22 +9,23 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import com.barmej.notesapp.data.model.CheckNote;
+import com.barmej.notesapp.data.model.Notes;
 
 @Dao
-public interface CheckNoteDao {
+public interface NotesDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    void insert(CheckNote checkNote);
+    void insert(Notes notes);
 
     @Update(onConflict = OnConflictStrategy.REPLACE)
-    void update(CheckNote checkNote);
+    void update(Notes notes);
 
     @Delete
-    void delete(CheckNote checkNote);
+    void delete(Notes notes);
 
-    @Query(" DELETE FROM check_note_table")
-    void deleteAll ();
+    @Query(" DELETE FROM simple_note_table")
+    void deleteAll();
 
-    @Query("SELECT * FROM check_note_table  ")
-    LiveData<CheckNote> getAllNoteCheck();
+    @Query("SELECT * FROM simple_note_table  ")
+    LiveData<Notes> getAllSimpleNotes();
 
 }

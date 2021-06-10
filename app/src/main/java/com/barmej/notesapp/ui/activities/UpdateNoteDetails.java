@@ -10,12 +10,8 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.ui.Constant;
-import com.barmej.notesapp.data.database.model.Items;
-import com.barmej.notesapp.data.database.model.Notes;
+import com.barmej.notesapp.data.model.Notes;
 import com.barmej.notesapp.R;
-
-import java.util.List;
 
 public class UpdateNoteDetails extends AppCompatActivity {
 

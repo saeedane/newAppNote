@@ -1,4 +1,4 @@
-package com.barmej.notesapp.data.database.model;
+package com.barmej.notesapp.data.model;
 
 import android.net.Uri;
 

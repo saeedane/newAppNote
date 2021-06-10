@@ -8,9 +8,7 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 import androidx.room.Update;
 
-import com.barmej.notesapp.data.database.model.NotePhoto;
-
-import java.util.List;
+import com.barmej.notesapp.data.model.NotePhoto;
 
 @Dao
 public interface NotePhotoDao {
