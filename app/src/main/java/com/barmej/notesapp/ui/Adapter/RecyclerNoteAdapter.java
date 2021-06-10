@@ -21,19 +21,24 @@ import com.barmej.notesapp.data.database.model.CheckNote;
 import com.barmej.notesapp.data.database.model.Items;
 import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.database.model.Notes;
+import com.barmej.notesapp.databinding.ItemNoteCheckBinding;
 import com.barmej.notesapp.databinding.ItemNotePhotoBinding;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.ui.Interface.OnItemLongClickListener;
 import com.barmej.notesapp.ui.activities.UpdateNoteCheckDetails;
 import com.barmej.notesapp.ui.activities.UpdateNoteDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
 public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
-    private List<Items> mItems;
+   private List<Items> mItems;
     private OnItemLongClickListener onItemLongClickListener;
-
+    private int NOTE_TYPE_IMAGE = 1;
+    private int NOTE_TYPE_TEXT = 2;
+    private int NOTE_TYPE_CHECKD = 2;
 
 
     public RecyclerNoteAdapter(List<Items> mItems, OnItemLongClickListener onItemLongClickListener) {
@@ -59,15 +64,15 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         } else if (viewType == 1) {
             LayoutInflater inflater = LayoutInflater.from(parent.getContext());
             ItemNotePhotoBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_note_photo,parent,false);
-
             return new itemNotePhoto(binding);
             // 2 - note check box
         } else {
 
-            return new itemNoteCheck(
+            LayoutInflater inflater = LayoutInflater.from(parent.getContext());
+            ItemNoteCheckBinding binding = DataBindingUtil.inflate(inflater, R.layout.item_note_check,parent,false);
+            return new itemNoteCheck(binding);
 
-                    LayoutInflater.from(parent.getContext()).inflate(R.layout.item_note_check, parent, false)
-            );
+
         }
     }
 
@@ -77,12 +82,13 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
         if (getItemViewType(position) == 0) {
-            List<NotePhoto> mNotes = (List<NotePhoto>) mItems.get(position).getObject();
-            ((itemNote) holder).setItemNote((Notes) mNotes);
+            Notes mNotes = (Notes) mItems.get(position).getObject();
+            ((itemNote) holder).setItemNote( mNotes);
         } else if (getItemViewType(position) == 1) {
 
             NotePhoto mNotesPhoto = (NotePhoto) mItems.get(position).getObject();
             ((itemNotePhoto) holder).setItemNotePhoto(mNotesPhoto);
+
         } else {
 
             CheckNote mNotesCheck = (CheckNote) mItems.get(position).getObject();
@@ -108,13 +114,15 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     @Override
     public int getItemViewType(int position) {
+
         return mItems.get(position).getType();
+
     }
 
-    public void setNote(Object object,int type) {
+    public void setNote(Object object, int type) {
         if ( object != null) {
             mItems.clear();
-            mItems.add(new Items(type, object));
+            mItems.add(new Items(object,type));
             notifyDataSetChanged();
 
         }
@@ -155,71 +163,17 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     static class itemNoteCheck extends RecyclerView.ViewHolder {
-        private TextView tv_note_check;
-        private CheckBox checkBox;
-        CardView cardViewCheckNote;
+        ItemNoteCheckBinding binding;
+        itemNoteCheck(@NonNull final ItemNoteCheckBinding binding) {
+            super(binding.getRoot());
+            this.binding = binding;
 
-        itemNoteCheck(@NonNull final View itemView) {
-            super(itemView);
-            tv_note_check = itemView.findViewById(R.id.tv_note_check);
-            checkBox = itemView.findViewById(R.id.checkBox);
-            cardViewCheckNote = itemView.findViewById(R.id.cardViewCheckNote);
 
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         void setItemNoteCheck(final CheckNote itemNoteCheck) {
-
-            tv_note_check.setText(itemNoteCheck.getTitle());
-            cardViewCheckNote.setCardBackgroundColor(itemNoteCheck.getColor());
-            if (itemNoteCheck.isCheked() == true) {
-
-                cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
-                checkBox.setChecked(true);
-                itemNoteCheck.setCheked(true);
-
-            } else {
-
-                cardViewCheckNote.getBackground().setTint(itemNoteCheck.getColor());
-                checkBox.setChecked(false);
-                itemNoteCheck.setCheked(false);
-
-            }
-
-            checkBox.setOnClickListener(new View.OnClickListener() {
-                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-                @Override
-                public void onClick(View view) {
-
-                    if (checkBox.isChecked()) {
-                        checkBox.setChecked(true);
-                        itemNoteCheck.setCheked(true);
-
-                        cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
-
-
-                    } else {
-                        checkBox.setChecked(false);
-                        cardViewCheckNote.getBackground().setTint(itemNoteCheck.getColor());
-                        itemNoteCheck.setCheked(false);
-
-                    }
-                }
-            });
-
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intentNoteCheckDetails = new Intent(itemView.getContext(), UpdateNoteCheckDetails.class);
-
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, itemNoteCheck.getTitle());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_IS_CHECK_NOTE, checkBox.isChecked());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, cardViewCheckNote.getCardBackgroundColor().getDefaultColor());
-                    itemView.getContext().startActivity(intentNoteCheckDetails);
-                }
-            });
-
+            binding.setNotes(itemNoteCheck);
 
         }
     }
@@ -237,6 +191,7 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
         void setItemNotePhoto(NotePhoto notePhoto) {
 
             binding.setNotes(notePhoto);
+
 
 
 

@@ -14,7 +14,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.ui.Adapter.Constant;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.data.database.model.Items;
 import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.R;
@@ -133,7 +133,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
         photoNoteText = photoNoteEditText.getText().toString();
         NotePhoto notePhoto = new NotePhoto(photoNoteText, imgPhotoUri, colorNotePhoto);
-        MainActivity.mItems.add(new Items(1, (List) notePhoto));
+//        MainActivity.mItems.add(new Items(1, (List) notePhoto));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
         Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();

@@ -10,7 +10,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.ui.Adapter.Constant;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.data.database.model.Items;
 import com.barmej.notesapp.data.database.model.Notes;
 import com.barmej.notesapp.R;
@@ -63,7 +63,7 @@ public class UpdateNoteDetails extends AppCompatActivity {
 
         String noteText = noteEditText.getText().toString();
         Notes notes = new Notes(noteText, colorBackground);
-        MainActivity.mItems.add(new Items(0, (List) notes));
+//        MainActivity.mItems.add(new Items(0, (List) notes));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
         MainActivity.mAdapter.notifyDataSetChanged();

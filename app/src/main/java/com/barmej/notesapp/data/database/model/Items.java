@@ -1,12 +1,10 @@
 package com.barmej.notesapp.data.database.model;
 
-import java.util.List;
-
 public class Items {
     private  int type;
     private Object object;
 
-    public Items(int type, Object object) {
+    public Items( Object object,int type) {
         this.type = type;
         this.object = object;
     }

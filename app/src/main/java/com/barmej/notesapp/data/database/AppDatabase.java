@@ -7,12 +7,13 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.barmej.notesapp.data.database.dao.CheckNoteDao;
-import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.database.converters.UriConverters;
+import com.barmej.notesapp.data.database.dao.CheckNoteDao;
 import com.barmej.notesapp.data.database.dao.NotePhotoDao;
+import com.barmej.notesapp.data.database.model.CheckNote;
+import com.barmej.notesapp.data.database.model.NotePhoto;
 
-@Database(entities = {NotePhoto.class}, version = 5, exportSchema = false)
+@Database(entities = {NotePhoto.class, CheckNote.class}, version = 8, exportSchema = false)
 @TypeConverters({UriConverters.class})
 public abstract class AppDatabase  extends RoomDatabase {
 

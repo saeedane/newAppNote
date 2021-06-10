@@ -13,12 +13,10 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
-import com.barmej.notesapp.ui.Adapter.Constant;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.data.database.model.CheckNote;
 import com.barmej.notesapp.data.database.model.Items;
 import com.barmej.notesapp.R;
-
-import java.util.List;
 
 public class UpdateNoteCheckDetails extends AppCompatActivity {
     private EditText checkNoteEditText;
@@ -100,8 +98,8 @@ public class UpdateNoteCheckDetails extends AppCompatActivity {
     private void updateCheckNote() {
 
         checkNoteText = checkNoteEditText.getText().toString();
-        CheckNote checkNote = new CheckNote(checkNoteText, noteCheckColor, checkBox.isChecked());
-        MainActivity.mItems.add(new Items(2, checkNote));
+        CheckNote checkNote = new CheckNote(checkNoteText, noteCheckColor);
+//        MainActivity.mItems.add(new Items(2, checkNote));
         MainActivity.mItems.remove(position);
         MainActivity.mAdapter.notifyItemChanged(position);
         MainActivity.mAdapter.notifyDataSetChanged();

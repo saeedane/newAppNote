@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.barmej.notesapp.data.database.model.CheckNote;
 import com.barmej.notesapp.data.database.model.NotePhoto;
 import com.barmej.notesapp.data.NoteDataRepository;
 
@@ -14,30 +15,60 @@ import java.util.List;
 public class NoteModelView extends AndroidViewModel {
     private NoteDataRepository repository;
     private LiveData<NotePhoto> allNotePhoto;
+    private LiveData<CheckNote> allNoteCheck;
     public NoteModelView(@NonNull Application application) {
         super(application);
         repository = NoteDataRepository.getInstance(application);
         allNotePhoto = repository.getNotePhotoInfo();
+        allNoteCheck = repository.getCheckedNoteInfo();
     }
 
-    public void insert(NotePhoto notePhoto){
-        repository.insert(notePhoto);
+    public void insertNotePhoto(NotePhoto notePhoto){
+        repository.insertNotePhoto(notePhoto);
     }
 
-    public void update(NotePhoto notePhoto){
-        repository.update(notePhoto);
+    public void updateNotePhoto(NotePhoto notePhoto){
+        repository.updateNotePhoto(notePhoto);
     }
 
-    public void delete(NotePhoto notePhoto){
-        repository.delete(notePhoto);
+    public void deleteNotePhoto(NotePhoto notePhoto){
+        repository.deleteNotePhoto(notePhoto);
     }
 
-    public void deleteAll(){
-        repository.deleteAllNotes();
+    public void deleteAllNotePhoto(){
+        repository.deleteAllNotePhoto();
     }
 
-    public LiveData<NotePhoto> getAllNotes (){
+    public LiveData<NotePhoto> getAllNotePhoto(){
 
         return allNotePhoto;
     }
+
+
+    /**
+     * repository get note checked
+     */
+
+
+    public void insertNoteCheck(CheckNote checkNote){
+        repository.insertNoteCheck(checkNote);
+    }
+
+    public void updateNoteCheck(CheckNote checkNote){
+        repository.updateNoteCheck(checkNote);
+    }
+
+    public void deleteNoteCheck(CheckNote checkNote){
+        repository.deleteNoteCheck(checkNote);
+    }
+
+    public void deleteAllNoteCheck(){
+        repository.deleteAllNotePhoto();
+    }
+
+    public LiveData<CheckNote> getAllNoteCheck(){
+
+        return allNoteCheck;
+    }
+
 }

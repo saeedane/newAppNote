@@ -21,7 +21,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 
-import com.barmej.notesapp.ui.Adapter.Constant;
+import com.barmej.notesapp.ui.Constant;
 import com.barmej.notesapp.R;
 
 
@@ -166,8 +166,6 @@ public class AddNoteActivity extends AppCompatActivity {
                 intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE, checkNoteEditText.getText().toString());
                 intent.putExtra(Constant.EXTRA_NOTE_CHECK_COLOR, mCardViewCheckNote.getCardBackgroundColor().getDefaultColor());
                 intent.putExtra(Constant.EXTRA_IS_CHECK_NOTE, checkNoteCheckBox.isChecked());
-
-
                 extraSetResultValue(Activity.RESULT_OK, intent);
             } else {
 
@@ -176,7 +174,7 @@ public class AddNoteActivity extends AppCompatActivity {
         }
 
         if (mCardViewPhoto.getVisibility() == View.VISIBLE) {
-            if (photoImageUri != null && !photoNoteEditText.getText().toString().isEmpty()) {
+            if ( !photoNoteEditText.getText().toString().isEmpty()) {
                 intent.putExtra(Constant.EXTRA_URI_PHOTO, photoImageUri);
                 intent.putExtra(Constant.EXTRA_TEXT_PHOTO, photoNoteEditText.getText().toString());
                 intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR, mCardViewPhoto.getCardBackgroundColor().getDefaultColor());

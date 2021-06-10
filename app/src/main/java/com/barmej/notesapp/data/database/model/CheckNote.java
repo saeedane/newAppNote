@@ -10,12 +10,10 @@ public class CheckNote {
     private int id;
     private String title ;
     private int color;
-    private boolean is_checkd = false;
 
-    public CheckNote(String title, int color, boolean is_checkd) {
+    public CheckNote(String title, int color) {
         this.title = title;
         this.color = color;
-        this.is_checkd = is_checkd;
     }
 
     public int getId() {
@@ -42,11 +40,5 @@ public class CheckNote {
         this.color = color;
     }
 
-    public boolean isCheked() {
-        return is_checkd;
-    }
 
-    public void setCheked(boolean is_checkd) {
-        this.is_checkd = is_checkd;
-    }
 }
