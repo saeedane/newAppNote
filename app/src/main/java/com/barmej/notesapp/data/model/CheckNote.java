@@ -1,18 +1,26 @@
 package com.barmej.notesapp.data.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.Index;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "check_note_table")
-public class CheckNote {
-    @PrimaryKey
-    private int id;
-    private String title ;
-    private int color;
 
-    public CheckNote(String title, int color) {
-        this.title = title;
+public class CheckNote {
+    @PrimaryKey(autoGenerate = true)
+    private int id ;
+    @ColumnInfo(name = "description_note_check")
+    private String description ;
+    @ColumnInfo(name = "color_note_check")
+    private int color;
+    @ColumnInfo(name = "option_checked")
+    private boolean checked ;
+
+    public CheckNote(String description, int color, boolean checked) {
+        this.description = description;
         this.color = color;
+        this.checked = checked;
     }
 
     public int getId() {
@@ -23,12 +31,12 @@ public class CheckNote {
         this.id = id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getColor() {
@@ -39,5 +47,11 @@ public class CheckNote {
         this.color = color;
     }
 
+    public boolean isChecked() {
+        return checked;
+    }
 
+    public void setChecked(boolean checked) {
+        this.checked = checked;
+    }
 }

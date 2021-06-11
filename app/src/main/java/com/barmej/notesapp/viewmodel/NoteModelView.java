@@ -24,6 +24,8 @@ public class NoteModelView extends AndroidViewModel {
         allNoteCheck = repository.getCheckedNoteInfo();
     }
 
+
+
     public void insertNotePhoto(NotePhoto notePhoto){
         repository.insertNotePhoto(notePhoto);
     }
@@ -46,6 +48,8 @@ public class NoteModelView extends AndroidViewModel {
     }
 
 
+
+
     /**
      *  get note checked repository
      */
@@ -64,7 +68,7 @@ public class NoteModelView extends AndroidViewModel {
     }
 
     public void deleteAllNoteCheck(){
-        repository.deleteAllNotePhoto();
+        repository.deleteAllNoteCheck();
     }
 
     public LiveData<CheckNote> getAllNoteCheck(){

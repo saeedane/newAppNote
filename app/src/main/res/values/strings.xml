@@ -14,4 +14,5 @@
     <string name="validate_message_note_simple">لنص مطلوب  للمذكرة البسيطة</string>
     <string name="validate_message_note_text">النص مطلوب</string>
     <string name="select_data_note">الرجاء اضافة  بينات الى مذكرة</string>
+    <string name="field_update_message_notes">الرجاء عدم ترك البينات فارغة</string>
 </resources>

@@ -9,9 +9,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.barmej.notesapp.data.model.Items;
 import com.barmej.notesapp.data.model.Notes;
 import com.barmej.notesapp.R;
+import com.barmej.notesapp.viewmodel.NoteModelView;
 
 public class UpdateNoteDetails extends AppCompatActivity {
 
@@ -19,12 +22,14 @@ public class UpdateNoteDetails extends AppCompatActivity {
     private String noteText;
     private CardView cardViewNote;
     private int colorBackground,position;
+    private NoteModelView noteModelView;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_details);
+        noteModelView = ViewModelProviders.of(this).get(NoteModelView.class);
 
 
         // receive background color item
@@ -59,12 +64,19 @@ public class UpdateNoteDetails extends AppCompatActivity {
 
         String noteText = noteEditText.getText().toString();
         Notes notes = new Notes(noteText, colorBackground);
-//        MainActivity.mItems.add(new Items(0, (List) notes));
-        MainActivity.mItems.remove(position);
-        MainActivity.mAdapter.notifyItemChanged(position);
-        MainActivity.mAdapter.notifyDataSetChanged();
-        Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
-        finish();
+        if (notes != null){
+            noteModelView.updateSimpleNotes(notes);
+            MainActivity.mItems.add(new Items( notes,0));
+            MainActivity.mItems.remove(position);
+            MainActivity.mAdapter.notifyItemChanged(position);
+            Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
+            finish();
+
+        }else{
+            Toast.makeText(getApplicationContext(), R.string.field_update_message_notes, Toast.LENGTH_SHORT).show();
+
+        }
+
 
     }
 

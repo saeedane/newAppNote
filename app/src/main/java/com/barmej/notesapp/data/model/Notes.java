@@ -1,14 +1,16 @@
 package com.barmej.notesapp.data.model;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity(tableName = "simple_note_table")
 public class Notes {
-
-    @PrimaryKey
+    @PrimaryKey(autoGenerate = true)
     private int id;
-    private String title;
+    @ColumnInfo(name = "description_simple_note")
+    private String description;
+    @ColumnInfo(name = "color_simple_note")
     private int color;
 
     public int getId() {
@@ -19,17 +21,17 @@ public class Notes {
         this.id = id;
     }
 
-    public Notes(String title, int color) {
-        this.title = title;
+    public Notes(String description, int color) {
+        this.description = description;
         this.color = color;
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public int getColor() {

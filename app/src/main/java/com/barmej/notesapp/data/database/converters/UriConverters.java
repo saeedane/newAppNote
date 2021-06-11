@@ -17,11 +17,12 @@ public class UriConverters  {
 
     @TypeConverter
     public String toString(Uri value){
-        if (value != null) {
-            return value.toString();
-        }
 
-        return null;
+        if (value == null){
+            return null;
+        }
+        return value.toString();
+
     }
 
 

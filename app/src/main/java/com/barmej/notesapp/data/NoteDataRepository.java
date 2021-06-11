@@ -9,9 +9,9 @@ import androidx.lifecycle.LiveData;
 import com.barmej.notesapp.data.database.dao.CheckNoteDao;
 import com.barmej.notesapp.data.database.dao.NotesDao;
 import com.barmej.notesapp.data.model.CheckNote;
-import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.data.database.AppDatabase;
 import com.barmej.notesapp.data.database.dao.NotePhotoDao;
+import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.data.model.Notes;
 
 public class NoteDataRepository {
@@ -76,6 +76,7 @@ public static NoteDataRepository getInstance(Context context) {
 
 
     // Room doesn't allow database operations run in the Main thread note photo
+
 
     public void insertNotePhoto(final NotePhoto note){
         appExecutor.getDiskIO().execute(new Runnable() {
@@ -204,10 +205,14 @@ public static NoteDataRepository getInstance(Context context) {
      * Get all note photo and all note check  data and simple note
      *
      */
+
+
     public LiveData<NotePhoto> getNotePhotoInfo() {
         // Get LiveData object from database using Room
         return mAppDatabase.notePhotoDao().getAllNotePhotos();
     }
+
+
 
     public LiveData<CheckNote> getCheckedNoteInfo() {
         // Get LiveData object from database using Room

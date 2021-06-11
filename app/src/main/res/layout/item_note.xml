@@ -28,7 +28,7 @@
             android:id="@+id/tv_note_simple"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{notes.title}"
+            android:text="@{notes.description}"
             android:textColorHint="#989CA0"
             android:textSize="18sp" />
 

@@ -1,9 +1,12 @@
 package com.barmej.notesapp.ui.Adapter;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
@@ -20,6 +23,10 @@ import com.barmej.notesapp.databinding.ItemNoteBinding;
 import com.barmej.notesapp.databinding.ItemNoteCheckBinding;
 import com.barmej.notesapp.databinding.ItemNotePhotoBinding;
 import com.barmej.notesapp.ui.Adapter.Listener.OnItemLongClickListener;
+import com.barmej.notesapp.ui.activities.Constant;
+import com.barmej.notesapp.ui.activities.UpdateNoteCheckDetails;
+import com.barmej.notesapp.ui.activities.UpdateNoteDetails;
+import com.barmej.notesapp.ui.activities.UpdateNotePhotoDetails;
 
 import java.util.List;
 
@@ -93,6 +100,10 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
 
+    public Notes getNotesAt(int position){
+        return (Notes) mItems.get(position).getObject();
+    }
+
     @Override
     public int getItemCount() {
         return mItems.size();
@@ -105,40 +116,33 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
     }
 
-    public void setNote(Object object, int type) {
-        if ( object != null) {
-            mItems.clear();
-            mItems.add(new Items(object,type));
-            notifyDataSetChanged();
-
-        }
-
-    }
 
     static class itemNote extends RecyclerView.ViewHolder {
-        ItemNoteBinding binding;
+        ItemNoteBinding noteBinding;
         itemNote(@NonNull ItemNoteBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
+            this.noteBinding = binding;
         }
 
         void setItemNote(final Notes notes) {
 
-            binding.setNotes(notes);
-            /*
+            noteBinding.setNotes(notes);
+
+
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent intentNoteCheckDetails = new Intent(itemView.getContext(), UpdateNoteDetails.class);
-
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_TEXT_NOTE, notes.getNoteBodySimple());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_COLOR, notes.getBackgroundCardNoteColor());
-                    intentNoteCheckDetails.putExtra(Constant.EXTRA_NOTE_POSITION, getAdapterPosition());
-                    itemView.getContext().startActivity(intentNoteCheckDetails);
+                    Intent intent = new Intent(view.getContext(), UpdateNoteDetails.class);
+                    intent.putExtra(Constant.EXTRA_TEXT_NOTE,noteBinding.tvNoteSimple.getText());
+                    intent.putExtra(Constant.EXTRA_NOTE_COLOR,notes.getColor());
+                    itemView.getContext().startActivity(intent);
                 }
             });
 
-            */
+
+
+
+
 
 
 
@@ -148,17 +152,49 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
 
     static class itemNoteCheck extends RecyclerView.ViewHolder {
-        ItemNoteCheckBinding binding;
+        ItemNoteCheckBinding noteCheckBinding;
         itemNoteCheck(@NonNull final ItemNoteCheckBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
-
-
+            this.noteCheckBinding = binding;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-        void setItemNoteCheck(final CheckNote itemNoteCheck) {
-            binding.setCheckNote(itemNoteCheck);
+        void setItemNoteCheck(final CheckNote checkNote) {
+            noteCheckBinding.setCheckNote(checkNote);
+            noteCheckBinding.checkBox.setOnClickListener(new View.OnClickListener() {
+                @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+                @Override
+                public void onClick(View view) {
+                    if (noteCheckBinding.checkBox.isChecked()) {
+                        checkNote.setChecked(true);
+                        noteCheckBinding.cardViewCheckNote.getBackground().setTint(Color.rgb(76, 175, 80));
+                        Toast.makeText(itemView.getContext(),"status is checked  : " + checkNote.isChecked(),Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        checkNote.setChecked(false);
+                        noteCheckBinding.cardViewCheckNote.getBackground().setTint(checkNote.getColor());
+                        Toast.makeText(itemView.getContext(),"status is checked  : " + checkNote.isChecked(),Toast.LENGTH_SHORT).show();
+
+
+                    }
+                }
+            });
+
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), UpdateNoteCheckDetails.class);
+                    intent.putExtra(Constant.EXTRA_TEXT_CHECK_NOTE,noteCheckBinding.tvNoteCheck.getText());
+                    intent.putExtra(Constant.EXTRA_NOTE_COLOR,checkNote.getColor());
+                    intent.putExtra(Constant.EXTRA_IS_CHECK_NOTE,checkNote.isChecked());
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+
+
+
 
         }
     }
@@ -166,16 +202,32 @@ public class RecyclerNoteAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
      class itemNotePhoto extends RecyclerView.ViewHolder {
 
-        ItemNotePhotoBinding binding;
+        ItemNotePhotoBinding notePhotoBinding;
         public itemNotePhoto(@NonNull ItemNotePhotoBinding binding) {
             super(binding.getRoot());
-            this.binding = binding;
+            this.notePhotoBinding = binding;
+
+
 
         }
 
-        void setItemNotePhoto(NotePhoto notePhoto) {
+        void setItemNotePhoto(final NotePhoto notePhoto) {
 
-            binding.setNoteImage(notePhoto);
+            notePhotoBinding.setNoteImage(notePhoto);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(view.getContext(), UpdateNotePhotoDetails.class);
+                    intent.putExtra(Constant.EXTRA_TEXT_PHOTO,notePhotoBinding.tvNotePhoto.getText().toString());
+                    intent.putExtra(Constant.EXTRA_URI_PHOTO,notePhoto.getImage());
+                    intent.putExtra(Constant.EXTRA_NOTE_PHOTO_COLOR,notePhoto.getColor());
+                    itemView.getContext().startActivity(intent);
+                }
+            });
+
+
+
 
 
 

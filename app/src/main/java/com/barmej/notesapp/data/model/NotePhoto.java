@@ -2,6 +2,7 @@ package com.barmej.notesapp.data.model;
 
 import android.net.Uri;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
@@ -9,8 +10,11 @@ import androidx.room.PrimaryKey;
 public class NotePhoto {
     @PrimaryKey(autoGenerate = true)
     private int id;
+    @ColumnInfo(name = "description_note_photo")
     private String description ;
+    @ColumnInfo(name = "image_note_photo")
     private Uri image;
+    @ColumnInfo(name = "color_note_photo")
     private int color;
 
     public NotePhoto(String description, Uri image, int color) {

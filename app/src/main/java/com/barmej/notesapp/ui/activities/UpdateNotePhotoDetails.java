@@ -13,9 +13,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.lifecycle.ViewModelProviders;
 
+import com.barmej.notesapp.data.model.Items;
 import com.barmej.notesapp.data.model.NotePhoto;
 import com.barmej.notesapp.R;
+import com.barmej.notesapp.viewmodel.NoteModelView;
 
 public class UpdateNotePhotoDetails extends AppCompatActivity {
     private static final int REQUEST_CODE_PHOTO = 101;
@@ -25,12 +28,14 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
     private Uri imgPhotoUri;
     private CardView card_view_photos;
     private int colorNotePhoto,position;
+    private NoteModelView noteModelView;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_note_photo_details);
+        noteModelView = ViewModelProviders.of(this).get(NoteModelView.class);
 
         // Definition of variable
         init();
@@ -129,11 +134,19 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
         photoNoteText = photoNoteEditText.getText().toString();
         NotePhoto notePhoto = new NotePhoto(photoNoteText, imgPhotoUri, colorNotePhoto);
-//        MainActivity.mItems.add(new Items(1, (List) notePhoto));
-        MainActivity.mItems.remove(position);
-        MainActivity.mAdapter.notifyItemChanged(position);
-        Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
-        finish();
+        if (notePhoto != null){
+            noteModelView.updateNotePhoto(notePhoto);
+            MainActivity.mItems.add(new Items(notePhoto,1));
+            MainActivity.mItems.remove(position);
+            MainActivity.mAdapter.notifyItemChanged(position);
+            Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
+            finish();
+
+        }else{
+            Toast.makeText(getApplicationContext(), R.string.field_update_message_notes, Toast.LENGTH_SHORT).show();
+
+        }
+
 
 
     }

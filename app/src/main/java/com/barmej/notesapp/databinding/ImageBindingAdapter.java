@@ -10,6 +10,8 @@ public class ImageBindingAdapter {
 
     @BindingAdapter("imageUrl")
     public static void setImageUrl(ImageView view, Uri uri) {
-        view.setImageURI(uri);
+        if (uri != null) {
+            view.setImageURI(uri);
+        }
     }
 }

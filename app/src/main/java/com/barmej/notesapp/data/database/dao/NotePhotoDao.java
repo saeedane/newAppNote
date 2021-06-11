@@ -24,6 +24,6 @@ public interface NotePhotoDao {
     @Query(" DELETE FROM note_table_photo")
     void deleteAll ();
 
-    @Query("SELECT * FROM note_table_photo  ")
+    @Query("SELECT * FROM note_table_photo ORDER BY id DESC  ")
     LiveData<NotePhoto> getAllNotePhotos();
 }
