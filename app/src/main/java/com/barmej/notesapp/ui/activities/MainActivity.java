@@ -67,11 +67,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-
-
-
-        private void deleteItem(final int position) {
-         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+    private void deleteItem(final int position) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setMessage("هل أنت متأكد من حذف هذا العنصر ");
         dialog.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
@@ -111,47 +108,43 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    private void showAllNoteData() {
 
-private void showAllNoteData(){
-
-    noteModelView.getAllSimpleNote().observe(this, new Observer<Notes>() {
-        @Override
-        public void onChanged(Notes notes) {
-            setSimpleNote(notes);
-
-
-        }
-    });
+        noteModelView.getAllSimpleNote().observe(this, new Observer<Notes>() {
+            @Override
+            public void onChanged(Notes notes) {
+                setSimpleNote(notes);
 
 
-
-    noteModelView.getAllNotePhoto().observe(this, new Observer<NotePhoto>() {
-        @Override
-        public void onChanged(NotePhoto notePhotos) {
-
-            setNotePhoto(notePhotos);
-
-        }
-    });
+            }
+        });
 
 
-    noteModelView.getAllNoteCheck().observe(this, new Observer<CheckNote>() {
-        @Override
-        public void onChanged(CheckNote checkNote) {
-            setCheckNote(checkNote);
+        noteModelView.getAllNotePhoto().observe(this, new Observer<NotePhoto>() {
+            @Override
+            public void onChanged(NotePhoto notePhotos) {
+
+                setNotePhoto(notePhotos);
+
+            }
+        });
 
 
+        noteModelView.getAllNoteCheck().observe(this, new Observer<CheckNote>() {
+            @Override
+            public void onChanged(CheckNote checkNote) {
+                setCheckNote(checkNote);
 
-        }
-    });
-}
 
+            }
+        });
+    }
 
 
     public void setSimpleNote(Notes note) {
-        if ( note != null) {
+        if (note != null) {
             mItems.clear();
-            mItems.add(new Items(note,0));
+            mItems.add(new Items(note, 0));
             mAdapter.notifyDataSetChanged();
 
         }
@@ -159,11 +152,10 @@ private void showAllNoteData(){
     }
 
 
-
     public void setNotePhoto(NotePhoto notePhoto) {
-        if ( notePhoto != null) {
+        if (notePhoto != null) {
             mItems.clear();
-            mItems.add(new Items(notePhoto,1));
+            mItems.add(new Items(notePhoto, 1));
             mAdapter.notifyDataSetChanged();
 
         }
@@ -172,16 +164,14 @@ private void showAllNoteData(){
 
 
     public void setCheckNote(CheckNote checkNote) {
-        if ( checkNote != null) {
+        if (checkNote != null) {
             mItems.clear();
-            mItems.add(new Items(checkNote,2));
+            mItems.add(new Items(checkNote, 2));
             mAdapter.notifyDataSetChanged();
 
         }
 
     }
-
-
 
 
 }

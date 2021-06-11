@@ -22,7 +22,7 @@ public interface CheckNoteDao {
     void delete(CheckNote checkNote);
 
     @Query(" DELETE FROM check_note_table")
-    void deleteAll ();
+    void deleteAll();
 
     @Query("SELECT * FROM check_note_table  ")
     LiveData<CheckNote> getAllNoteCheck();

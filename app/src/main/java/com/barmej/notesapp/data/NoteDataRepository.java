@@ -35,31 +35,30 @@ public class NoteDataRepository {
     private AppDatabase mAppDatabase;
     private AppExecutor appExecutor;
 
-/**
- * Instance of AppExecutor to perform tasks on worker threads
-}
- */
-private NotePhotoDao notePhotoDao;
-private CheckNoteDao checkNoteDao;
-private NotesDao notesDao;
+    /**
+     * Instance of AppExecutor to perform tasks on worker threads
+     * }
+     */
+    private NotePhotoDao notePhotoDao;
+    private CheckNoteDao checkNoteDao;
+    private NotesDao notesDao;
 
 
-
- /**
- * Method used to get an instance of WeatherDataRepository class
- *
- * @param context Context to use for some initializations
- * @return an instance of WeatherDataRepository class
- */
-public static NoteDataRepository getInstance(Context context) {
-    if (sInstance == null) {
-        synchronized (LOCK) {
-            if (sInstance == null)
-                sInstance = new NoteDataRepository(context.getApplicationContext());
+    /**
+     * Method used to get an instance of WeatherDataRepository class
+     *
+     * @param context Context to use for some initializations
+     * @return an instance of NoteDataRepository class
+     */
+    public static NoteDataRepository getInstance(Context context) {
+        if (sInstance == null) {
+            synchronized (LOCK) {
+                if (sInstance == null)
+                    sInstance = new NoteDataRepository(context.getApplicationContext());
+            }
         }
+        return sInstance;
     }
-    return sInstance;
-}
 
     /**
      * @param context Context to use for some initializations
@@ -78,7 +77,7 @@ public static NoteDataRepository getInstance(Context context) {
     // Room doesn't allow database operations run in the Main thread note photo
 
 
-    public void insertNotePhoto(final NotePhoto note){
+    public void insertNotePhoto(final NotePhoto note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -87,7 +86,7 @@ public static NoteDataRepository getInstance(Context context) {
         });
     }
 
-    public void deleteNotePhoto(final NotePhoto note){
+    public void deleteNotePhoto(final NotePhoto note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -97,13 +96,14 @@ public static NoteDataRepository getInstance(Context context) {
 
     }
 
-    public void updateNotePhoto(final NotePhoto note){
+    public void updateNotePhoto(final NotePhoto note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mAppDatabase.notePhotoDao().update(note);
             }
-        });    }
+        });
+    }
 
     public void deleteAllNotePhoto() {
         appExecutor.getDiskIO().execute(new Runnable() {
@@ -116,12 +116,11 @@ public static NoteDataRepository getInstance(Context context) {
     }
 
 
-
     /**
      * app executor check notes
-     * */
+     */
 
-    public void insertNoteCheck(final CheckNote note){
+    public void insertNoteCheck(final CheckNote note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -130,7 +129,7 @@ public static NoteDataRepository getInstance(Context context) {
         });
     }
 
-    public void deleteNoteCheck(final CheckNote note){
+    public void deleteNoteCheck(final CheckNote note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -140,13 +139,14 @@ public static NoteDataRepository getInstance(Context context) {
 
     }
 
-    public void updateNoteCheck(final CheckNote note){
+    public void updateNoteCheck(final CheckNote note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mAppDatabase.checkNoteDao().update(note);
             }
-        });    }
+        });
+    }
 
     public void deleteAllNoteCheck() {
         appExecutor.getDiskIO().execute(new Runnable() {
@@ -161,9 +161,9 @@ public static NoteDataRepository getInstance(Context context) {
 
     /**
      * app executor check notes
-     * */
+     */
 
-    public void insertSimpleNotes(final Notes note){
+    public void insertSimpleNotes(final Notes note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -172,7 +172,7 @@ public static NoteDataRepository getInstance(Context context) {
         });
     }
 
-    public void deleteSimpleNotes(final Notes note){
+    public void deleteSimpleNotes(final Notes note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
@@ -182,13 +182,14 @@ public static NoteDataRepository getInstance(Context context) {
 
     }
 
-    public void updateSimpleNotes(final Notes note){
+    public void updateSimpleNotes(final Notes note) {
         appExecutor.getDiskIO().execute(new Runnable() {
             @Override
             public void run() {
                 mAppDatabase.notesDao().update(note);
             }
-        });    }
+        });
+    }
 
     public void deleteAllSimpleNotes() {
         appExecutor.getDiskIO().execute(new Runnable() {
@@ -203,7 +204,6 @@ public static NoteDataRepository getInstance(Context context) {
 
     /**
      * Get all note photo and all note check  data and simple note
-     *
      */
 
 
@@ -211,7 +211,6 @@ public static NoteDataRepository getInstance(Context context) {
         // Get LiveData object from database using Room
         return mAppDatabase.notePhotoDao().getAllNotePhotos();
     }
-
 
 
     public LiveData<CheckNote> getCheckedNoteInfo() {
@@ -223,8 +222,6 @@ public static NoteDataRepository getInstance(Context context) {
         // Get LiveData object from database using Room
         return mAppDatabase.notesDao().getAllSimpleNotes();
     }
-
-
 
 
 }

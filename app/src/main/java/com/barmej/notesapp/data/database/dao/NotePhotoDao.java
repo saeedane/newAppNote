@@ -22,7 +22,7 @@ public interface NotePhotoDao {
     void delete(NotePhoto notePhoto);
 
     @Query(" DELETE FROM note_table_photo")
-    void deleteAll ();
+    void deleteAll();
 
     @Query("SELECT * FROM note_table_photo ORDER BY id DESC  ")
     LiveData<NotePhoto> getAllNotePhotos();

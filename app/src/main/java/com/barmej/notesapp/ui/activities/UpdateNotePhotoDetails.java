@@ -27,7 +27,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
     private String photoNoteText;
     private Uri imgPhotoUri;
     private CardView card_view_photos;
-    private int colorNotePhoto,position;
+    private int colorNotePhoto, position;
     private NoteModelView noteModelView;
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -73,9 +73,6 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
     }
 
 
-
-
-
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -86,7 +83,7 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
 
                 selectPhotoUri(data.getData());
-                getContentResolver().takePersistableUriPermission(data.getData(),Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                getContentResolver().takePersistableUriPermission(data.getData(), Intent.FLAG_GRANT_READ_URI_PERMISSION);
 
             } else {
 
@@ -134,19 +131,18 @@ public class UpdateNotePhotoDetails extends AppCompatActivity {
 
         photoNoteText = photoNoteEditText.getText().toString();
         NotePhoto notePhoto = new NotePhoto(photoNoteText, imgPhotoUri, colorNotePhoto);
-        if (notePhoto != null){
+        if (notePhoto != null) {
             noteModelView.updateNotePhoto(notePhoto);
-            MainActivity.mItems.add(new Items(notePhoto,1));
+            MainActivity.mItems.add(new Items(notePhoto, 1));
             MainActivity.mItems.remove(position);
             MainActivity.mAdapter.notifyItemChanged(position);
             Toast.makeText(getApplicationContext(), R.string.success_message_notes, Toast.LENGTH_SHORT).show();
             finish();
 
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(), R.string.field_update_message_notes, Toast.LENGTH_SHORT).show();
 
         }
-
 
 
     }

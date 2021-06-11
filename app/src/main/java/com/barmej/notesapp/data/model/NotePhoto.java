@@ -6,12 +6,12 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName ="note_table_photo")
+@Entity(tableName = "note_table_photo")
 public class NotePhoto {
     @PrimaryKey(autoGenerate = true)
     private int id;
     @ColumnInfo(name = "description_note_photo")
-    private String description ;
+    private String description;
     @ColumnInfo(name = "image_note_photo")
     private Uri image;
     @ColumnInfo(name = "color_note_photo")

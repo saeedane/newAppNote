@@ -33,7 +33,7 @@ import com.barmej.notesapp.viewmodel.NoteModelView;
 public class AddNoteActivity extends AppCompatActivity {
     private static final int REQUEST_CODE_PERMISSION = 123;
     private static final int REQUEST_CODE_PHOTO = 100;
-    private static final String TAG =AddNoteActivity.class.getSimpleName() ;
+    private static final String TAG = AddNoteActivity.class.getSimpleName();
     private CardView mCardViewPhoto, mCardViewNote, mCardViewCheckNote;
     private ImageView photoImageView;
     private Uri photoImageUri;
@@ -134,7 +134,7 @@ public class AddNoteActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (checkNoteCheckBox.isChecked()) {
-                        checkNoteCheckBox.setChecked(true);
+                    checkNoteCheckBox.setChecked(true);
 
                 } else {
                     checkNoteCheckBox.setChecked(false);
@@ -178,7 +178,7 @@ public class AddNoteActivity extends AppCompatActivity {
         }
 
         if (mCardViewPhoto.getVisibility() == View.VISIBLE) {
-            if ( !photoNoteEditText.getText().toString().isEmpty()) {
+            if (!photoNoteEditText.getText().toString().isEmpty()) {
 
                 insertNotePhoto();
 
@@ -203,8 +203,6 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
 
-
-
     private void insertSimpleNote() {
         String textNote = noteEditText.getText().toString();
         int noteSimpleColor = mCardViewNote.getCardBackgroundColor().getDefaultColor();
@@ -216,7 +214,7 @@ public class AddNoteActivity extends AppCompatActivity {
             Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
 
 
-        }else{
+        } else {
             Toast.makeText(this, "note field", Toast.LENGTH_SHORT).show();
 
         }
@@ -226,7 +224,7 @@ public class AddNoteActivity extends AppCompatActivity {
         //text  note check
         String textNoteCheck = checkNoteEditText.getText().toString();
         int noteCheckColor = mCardViewCheckNote.getCardBackgroundColor().getDefaultColor();
-        CheckNote checkNote = new CheckNote(textNoteCheck, noteCheckColor,checkNoteCheckBox.isChecked());
+        CheckNote checkNote = new CheckNote(textNoteCheck, noteCheckColor, checkNoteCheckBox.isChecked());
 
         if (checkNote != null) {
             noteModelView.insertNoteCheck(checkNote);
@@ -240,31 +238,24 @@ public class AddNoteActivity extends AppCompatActivity {
     }
 
 
-
-
-
     private void insertNotePhoto() {
 
         String photoTextNote = photoNoteEditText.getText().toString();
         int notePhotoColor = mCardViewPhoto.getCardBackgroundColor().getDefaultColor();
         NotePhoto notePhoto = new NotePhoto(photoTextNote, photoImageUri, notePhotoColor);
 
-        if (notePhoto != null){
+        if (notePhoto != null) {
             noteModelView.insertNotePhoto(notePhoto);
             finish();
-            Log.v(TAG,"note data : " + notePhoto);
+            Log.v(TAG, "note data : " + notePhoto);
             Toast.makeText(this, "note saved", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             Toast.makeText(this, "note field", Toast.LENGTH_SHORT).show();
 
         }
 
 
     }
-
-
-
-
 
 
     private void changeColorCardView(int color) {
@@ -306,7 +297,7 @@ public class AddNoteActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if (requestCode == REQUEST_CODE_PHOTO ) {
+        if (requestCode == REQUEST_CODE_PHOTO) {
 
             if (resultCode == RESULT_OK && data != null && data.getData() != null) {
                 selectPhotoUri(data.getData());
@@ -355,11 +346,6 @@ public class AddNoteActivity extends AppCompatActivity {
 
 
     }
-
-
-
-
-
 
 
     private void selectPhoto() {
